@@ -82,9 +82,9 @@
                         <div class="checkbox">
                             <label><input type="checkbox"> Remember me</label>
                         </div>
-                        <button type="submit" class="btn btn-default" onclick="return sendloginReq();">Submit</button>
+                        <!--<button type="submit" class="btn btn-default" onclick="return sendloginReq();">Submit</button>-->
                     </form>
-                    <button type="submit" class="btn btn-default" onclick="return sendloginReq();">Test fucking method</button>
+                    <button type="submit" class="btn btn-default" onclick="return sendloginReq();">Login</button>
 
 
                 </div>
@@ -125,22 +125,18 @@
                     localStorage.setItem("email", document.getElementsByName('email')[0].value);
                     localStorage.setItem("username", jsonfile['username']);
                     localStorage.setItem("account_type", jsonfile['account_type']);
-
-
-
-
-                    if (localStorage.getItem("account_type") == "manager") {
-                        // window.location.replace("manager_landing.html");
-                    } else if (localStorage.getItem("account_type") == "worker") {
-                        // window.location.replace("worker_landing.html");
+                    if (localStorage.getItem("account_type") == "admin") {
+                        window.location.replace("admin-dashboard.html");
+                    } else if (localStorage.getItem("account_type") == "user") {
+                        window.location.replace("dashboard.html");
                     } else {
-                        // window.location.replace("landing.html");
+                        window.location.replace("dashboard.html");
                     }
                 }
             }
         };
         xhttp.open("POST", "http://kaangoksal.com:5001/login", true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.setRequestHeader("Authorization", base64encoded);
         xhttp.send(data);
         console.log("Sent Request");

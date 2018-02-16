@@ -238,5 +238,61 @@
 </footer>
 
 
+<script>
+    function get_user_devices() {
+        console.log("Sending get user devices");
+
+        // cookies should be working, so we don't have to add an authorization header? If not uncomment this
+        var base64encoded = "Basic" + " " + btoa("kaangoksal@gmai.com" + ":" + "pass-kaan");
+
+        var data = JSON.stringify(false);
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                console.log(" Response : " + xhttp.responseText);
+                var jsonfile = JSON.parse(xhttp.responseText);
+                var devices_array = jsonfile["devices"];
+
+
+
+
+                for (var i = 0; i<devices_array.length; i++ ) {
+                    // maybe declare these guys outside
+                    var device_name = devices_array[i]["name"];
+                    var device_power = devices_array[i]["power"];
+                    var device_last_ping = devices_array[i]["last_ping"];
+
+                    var device_type = devices_array[i]["type"];
+
+                    var device_state = devices_array[i]["type"];
+
+
+                }
+
+                if (jsonfile["code"] == 31) {
+                    alert("Login Failed " + jsonfile["message"]);
+                }
+                else {
+                    localStorage.setItem("email", document.getElementsByName('email')[0].value);
+                    localStorage.setItem("username", jsonfile['username']);
+                    localStorage.setItem("account_type", jsonfile['account_type']);
+                    if (localStorage.getItem("account_type") == "admin") {
+                        window.location.replace("admin-dashboard.html");
+                    } else if (localStorage.getItem("account_type") == "user") {
+                        window.location.replace("dashboard.html");
+                    } else {
+                        window.location.replace("dashboard.html");
+                    }
+                }
+            }
+        };
+        xhttp.open("POST", "http://kaangoksal.com:5001/login", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.setRequestHeader("Authorization", base64encoded);
+        xhttp.send(data);
+        console.log("Sent Request");
+    }
+</script>
+
 </body>
 </html>
