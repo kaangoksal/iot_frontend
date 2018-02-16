@@ -16,18 +16,25 @@
             color: white;
             padding: 15px;
         }
+
         #map {
             height: 400px;
             width: 100%;
         }
-        .panel-default{
+
+        .panel-default {
             margin-left: 1%;
             margin-right: 1%;
         }
+
+        .glyphicon-device-status {
+            font-size: 30px;
+            color: green;
+        }
+
     </style>
 </head>
 <body>
-
 
 
 <nav class="navbar navbar-inverse">
@@ -60,17 +67,17 @@
                 <h3>Events</h3>
             </div>
             <div class="panel-body">
-            <div class="alert alert-success fade in">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                <p><strong>Connection Restored</strong></p>
-                People are looking at your profile. Find out who.
-            </div>
+                <div class="alert alert-success fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    <p><strong>Connection Restored</strong></p>
+                    People are looking at your profile. Find out who.
+                </div>
 
-            <div class="alert alert-warning fade in">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                <p><strong>Connection Lost</strong></p>
-                Connection lost with: Rover-1
-            </div>
+                <div class="alert alert-warning fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    <p><strong>Connection Lost</strong></p>
+                    Connection lost with: Rover-1
+                </div>
             </div>
 
         </div>
@@ -91,15 +98,101 @@
                                 <img src="images/gpstracker.png" class="img-circle" height="55" width="55" alt="Avatar">
                             </div>
                             <div class="col-sm-9">
+                                <div class="row">
+                                    <p align="left"><span
+                                            class="glyphicon glyphicon-flash glyphicon-device-status"></span> 8 Hours of
+                                        Battery available </p>
 
-                                <p>Just Forgot that I had to mention something about someone to someone about how I
-                                    forgot
-                                    something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I
-                                    don't.</p>
+                                </div>
+                                <div class="row">
+                                    <p align="left"><span
+                                            class="glyphicon glyphicon-ok-sign glyphicon-device-status"></span> All
+                                        Systems Operational </p>
+
+                                </div>
 
                             </div>
                         </div>
                     </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>GPS Tracker </h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-sm-3">
+                                <img src="images/gpstracker.png" class="img-circle" height="55" width="55" alt="Avatar">
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <p align="left"><span
+                                            class="glyphicon glyphicon-flash glyphicon-device-status"></span> 8 Hours of
+                                        Battery available </p>
+
+                                </div>
+                                <div class="row">
+                                    <p align="left"><span
+                                            class="glyphicon glyphicon-ok-sign glyphicon-device-status"></span> All
+                                        Systems Operational </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>GPS Tracker 1</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-sm-3">
+                                <img src="images/gpstracker.png" class="img-circle" height="55" width="55" alt="Avatar">
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <p align="left"><span
+                                            class="glyphicon glyphicon-flash glyphicon-device-status"></span> 8 Hours of
+                                        Battery available </p>
+
+                                </div>
+                                <div class="row">
+                                    <p align="left"><span
+                                            class="glyphicon glyphicon-ok-sign glyphicon-device-status"></span> All
+                                        Systems Operational </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>GPS Tracker 1</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-sm-3">
+                                <img src="images/gpstracker.png" class="img-circle" height="55" width="55" alt="Avatar">
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <p align="left"><span
+                                            class="glyphicon glyphicon-flash glyphicon-device-status"></span> 8 Hours of
+                                        Battery available </p>
+
+                                </div>
+                                <div class="row">
+                                    <p align="left"><span
+                                            class="glyphicon glyphicon-ok-sign glyphicon-device-status"></span> All
+                                        Systems Operational </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -110,10 +203,27 @@
                 <h3>Device Details</h3>
             </div>
             <div class="panel-body">
-                <h3>Location</h3>
-                <div id="map"></div>
-                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVYK3iQrTq30MLqLO2j7YBqUM36S8Nm9Y&callback=initMap"> </script>
-                <script>function initMap() { var uluru = {lat: -25.363, lng: 131.044}; var map = new google.maps.Map(document.getElementById('map'), { zoom: 4, center: uluru }); var marker = new google.maps.Marker({ position: uluru, map: map }); }</script>
+
+                <div class="well">
+                    <h3 align="left">Device Information</h3>
+                </div>
+
+                <div class="well">
+                    <h3 align="left">Location</h3>
+                    <div id="map"></div>
+                    <script async defer
+                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVYK3iQrTq30MLqLO2j7YBqUM36S8Nm9Y&callback=initMap"></script>
+                    <script>function initMap() {
+
+                        var uluru = {lat: -25.363, lng: 131.044};
+                        var map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: uluru});
+                        var marker = new google.maps.Marker({position: uluru, map: map});
+
+
+                    }</script>
+                </div>
+
+                
 
 
 
@@ -126,7 +236,6 @@
 <footer class="container-fluid text-center">
     <p>Footer Text</p>
 </footer>
-
 
 
 </body>
