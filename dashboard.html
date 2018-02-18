@@ -279,16 +279,7 @@
 
 
                     <div id="map"></div>
-                    <script async defer
-                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVYK3iQrTq30MLqLO2j7YBqUM36S8Nm9Y&callback=initMap"></script>
-                    <script>function initMap() {
 
-                        var uluru = {lat: -25.363, lng: 131.044};
-                        var map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: uluru});
-                        var marker = new google.maps.Marker({position: uluru, map: map});
-
-
-                    }</script>
                 </div>
 
 
@@ -397,6 +388,67 @@
         xhttp.setRequestHeader("Authorization", base64encoded);
         xhttp.send(data);
         console.log("Sent Request");
+    }
+</script>
+
+
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVYK3iQrTq30MLqLO2j7YBqUM36S8Nm9Y&callback=initMap"></script>
+<script>
+
+    function initMap() {
+        console.log("I got called");
+        var uluru = {lat: -25.363, lng: 131.044};
+        map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: uluru});
+        //var marker = new google.maps.Marker({position: uluru, map: map});
+
+    }
+</script>
+
+<script>
+    function change_map() {
+    var myLatlng = new google.maps.LatLng(41.057537,28.696123);
+    var mapOptions = {
+        zoom: 4,
+        center: myLatlng
+    };
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        title:"Hello World!"
+    });
+
+    // To add the marker to the map, call setMap();
+    marker.setMap(map);
+
+
+        // console.log("I also got called, will change the map");
+        // initMap();
+        // var uluru = {lat: 41.057537, lng: 28.696123};
+        // var marker = new google.maps.Marker({position: uluru, map: map});
+        // // initMap();
+
+    }
+
+    function add_path(waypoints) {
+        // var flightPlanCoordinates = [
+        //     {lat: 37.772, lng: -122.214},
+        //     {lat: 21.291, lng: -157.821},
+        //     {lat: -18.142, lng: 178.431},
+        //     {lat: -27.467, lng: 153.027}
+        // ];
+        var path = new google.maps.Polyline({
+            path: waypoints,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        path.setMap(map);
+
     }
 </script>
 
