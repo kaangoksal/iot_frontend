@@ -5,9 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/maps/documentation/javascript/demos/demos.css">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/css/mdb.min.css" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/js/mdb.min.js"></script>
 
     <style>
         /* Set black background color, white text and some padding */
@@ -206,10 +212,72 @@
 
                 <div class="well">
                     <h3 align="left">Device Information</h3>
+
+                    <div class="panel-default panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p align="left">Device Username</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p>0013123asdf</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p align="left">Device Name</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p>Motorcycle Tracker</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p align="left">Latest Ping</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p>10 Minutes Ago</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
 
                 <div class="well">
                     <h3 align="left">Location</h3>
+
+                    <div class="panel-default panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p align="left">Current Coordinates</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p>28.696123, 41.057537</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p align="left">Current Location</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p>Istanbul, Bahcesehir</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p align="left">Latest Update</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p>10 Minutes Ago</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
                     <div id="map"></div>
                     <script async defer
                             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVYK3iQrTq30MLqLO2j7YBqUM36S8Nm9Y&callback=initMap"></script>
@@ -223,7 +291,47 @@
                     }</script>
                 </div>
 
-                
+
+                <div class="well">
+                    <h3 align="left">Battery</h3>
+
+
+
+
+                    <canvas id="lineChart"></canvas>
+
+                    <script>
+
+                        //line
+                        var ctxL = document.getElementById("lineChart").getContext('2d');
+                        var myLineChart = new Chart(ctxL, {
+                            type: 'line',
+                            data: {
+                                labels: ["0", "1", "2", "3", "4", "5", "6"],
+                                datasets: [
+                                    {
+                                        label: "Battery",
+                                        fillColor: "rgba(220,220,220,0.2)",
+                                        strokeColor: "rgba(220,220,220,1)",
+                                        pointColor: "rgba(220,220,220,1)",
+                                        pointStrokeColor: "#fff",
+                                        pointHighlightFill: "#fff",
+                                        pointHighlightStroke: "rgba(220,220,220,1)",
+                                        data: [100, 95, 80, 81, 56, 55]
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true
+                            }
+                        });
+
+                    </script>
+
+
+
+                </div>
+
 
 
 
@@ -247,16 +355,14 @@
 
         var data = JSON.stringify(false);
         var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
+        xhttp.onreadystatechange = function () {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
                 console.log(" Response : " + xhttp.responseText);
                 var jsonfile = JSON.parse(xhttp.responseText);
                 var devices_array = jsonfile["devices"];
 
 
-
-
-                for (var i = 0; i<devices_array.length; i++ ) {
+                for (var i = 0; i < devices_array.length; i++) {
                     // maybe declare these guys outside
                     var device_name = devices_array[i]["name"];
                     var device_power = devices_array[i]["power"];

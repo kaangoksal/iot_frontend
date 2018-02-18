@@ -126,7 +126,7 @@
                     localStorage.setItem("username", jsonfile['username']);
                     localStorage.setItem("account_type", jsonfile['account_type']);
                     if (localStorage.getItem("account_type") == "admin") {
-                        window.location.replace("admin-dashboard.html");
+                        window.location.replace("dashboard.html");
                     } else if (localStorage.getItem("account_type") == "user") {
                         window.location.replace("dashboard.html");
                     } else {
