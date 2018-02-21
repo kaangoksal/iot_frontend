@@ -10,6 +10,10 @@ function create_device_card(devices_panel_root, device) {
 
     var new_device_panel = document.createElement("div");
     new_device_panel.className = "panel panel-default";
+    new_device_panel.id = device_id;
+
+    // With this function we can know which device is selected!
+    new_device_panel.onclick = function() {device_select(device_id);};
 
     devices_panel_root.appendChild(new_device_panel);
     //=======================Header==================================
@@ -95,5 +99,52 @@ function create_device_card(devices_panel_root, device) {
     p_status.appendChild(glyphicon_status);
 
     p_status.textContent = "Last ping: " + device_last_ping;
+
+
+
+}
+
+function device_select(device_id)
+{
+    console.log("Device selected ", device_id);
+    change_color_of_device_card(device_id);
+    display_device_details(device_id);
+
+    //current selected device vs previously selected device!
+
+}
+
+function change_color_of_device_card(device_id) {
+
+    if (typeof current_selected_device === 'undefined') {
+        var device_root = document.getElementById(device_id);
+        var heading = device_root.children[0];
+        heading.className = device_root.className + " panel-heading-custom";
+        current_selected_device = device_id;
+    } else {
+        // it means that we have a previously selected element!
+        var device_root = document.getElementById(current_selected_device);
+        var heading = device_root.children[0];
+        heading.className = "panel-heading"; //resets the header back to original
+
+        device_root = document.getElementById(device_id);
+        heading = device_root.children[0];
+        heading.className = heading.className + " panel-heading-custom";
+        current_selected_device = device_id;
+
+    }
+}
+
+function display_device_details(device) {
+ console.log(current_selected_device);
+ if (device == "device1"){
+
+     console.log("blocked");
+     x.style.display = "block";
+ } else if (device == "device2") {
+
+     console.log("allowed");
+     x.style.display = "none";
+ }
 
 }

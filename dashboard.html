@@ -12,9 +12,11 @@
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/css/mdb.min.css"/>
+    <link rel="stylesheet" href="./css/project_specific.css">
 
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/js/mdb.min.js"></script>
+
 
     <style>
         /* Set black background color, white text and some padding */
@@ -38,6 +40,7 @@
             font-size: 30px;
             color: green;
         }
+
 
     </style>
 </head>
@@ -108,8 +111,10 @@
                     <!--</div>-->
                     <!--<div class="col-sm-9">-->
                     <!--<div class="row">-->
-                    <!--<p align="left"><span-->
-                    <!--class="glyphicon glyphicon-flash glyphicon-device-status"></span> 8 Hours of-->
+
+                    <!--<p align="left">-->
+                    <!--<span class="glyphicon glyphicon-flash glyphicon-device-status"></span>-->
+                    <!--8 Hours of-->
                     <!--Battery available </p>-->
 
                     <!--</div>-->
@@ -123,86 +128,6 @@
                     <!--</div>-->
                     <!--</div>-->
                     <!--</div>-->
-
-                    <!--<div class="panel panel-default">-->
-                    <!--<div class="panel-heading">-->
-                    <!--<h4>GPS Tracker </h4>-->
-                    <!--</div>-->
-                    <!--<div class="panel-body">-->
-                    <!--<div class="col-sm-3">-->
-                    <!--<img src="images/gpstracker.png" class="img-circle" height="55" width="55" alt="Avatar">-->
-                    <!--</div>-->
-                    <!--<div class="col-sm-9">-->
-                    <!--<div class="row">-->
-                    <!--<p align="left"><span-->
-                    <!--class="glyphicon glyphicon-flash glyphicon-device-status"></span> 8 Hours of-->
-                    <!--Battery available </p>-->
-
-                    <!--</div>-->
-                    <!--<div class="row">-->
-                    <!--<p align="left"><span-->
-                    <!--class="glyphicon glyphicon-ok-sign glyphicon-device-status"></span> All-->
-                    <!--Systems Operational </p>-->
-
-                    <!--</div>-->
-
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-
-                    <!--<div class="panel panel-default">-->
-                    <!--<div class="panel-heading">-->
-                    <!--<h4>GPS Tracker 1</h4>-->
-                    <!--</div>-->
-                    <!--<div class="panel-body">-->
-                    <!--<div class="col-sm-3">-->
-                    <!--<img src="images/gpstracker.png" class="img-circle" height="55" width="55" alt="Avatar">-->
-                    <!--</div>-->
-                    <!--<div class="col-sm-9">-->
-                    <!--<div class="row">-->
-                    <!--<p align="left"><span-->
-                    <!--class="glyphicon glyphicon-flash glyphicon-device-status"></span> 8 Hours of-->
-                    <!--Battery available </p>-->
-
-                    <!--</div>-->
-                    <!--<div class="row">-->
-                    <!--<p align="left"><span-->
-                    <!--class="glyphicon glyphicon-ok-sign glyphicon-device-status"></span> All-->
-                    <!--Systems Operational </p>-->
-
-                    <!--</div>-->
-
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>GPS Tracker 1</h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="col-sm-3">
-                                <img src="images/gpstracker.png" class="img-circle" height="55" width="55" alt="Avatar">
-                            </div>
-                            <div class="col-sm-9">
-                                <div class="row">
-
-                                    <p align="left">
-                                        <span class="glyphicon glyphicon-flash glyphicon-device-status"></span>
-                                         8 Hours of
-                                        Battery available </p>
-
-                                </div>
-                                <div class="row">
-                                    <p align="left"><span
-                                            class="glyphicon glyphicon-ok-sign glyphicon-device-status"></span> All
-                                        Systems Operational </p>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
             </div>
@@ -225,7 +150,7 @@
                                     <p align="left">Device Username</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p>0013123asdf</p>
+                                    <p id="device_username_text"> No device selected</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -233,7 +158,7 @@
                                     <p align="left">Device Name</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p>Motorcycle Tracker</p>
+                                    <p id="device_name_test"> - </p>
                                 </div>
                             </div>
                             <div class="row">
@@ -241,7 +166,7 @@
                                     <p align="left">Latest Ping</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p>10 Minutes Ago</p>
+                                    <p id="latest_ping_text"> - </p>
                                 </div>
                             </div>
 
@@ -249,7 +174,7 @@
                     </div>
                 </div>
 
-                <div class="well">
+                <div class="well" id="device_location_well">
                     <h3 align="left">Location</h3>
 
                     <div class="panel-default panel">
@@ -259,7 +184,7 @@
                                     <p align="left">Current Coordinates</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p>28.696123, 41.057537</p>
+                                    <p> - </p>
                                 </div>
                             </div>
                             <div class="row">
@@ -267,7 +192,7 @@
                                     <p align="left">Current Location</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p>Istanbul, Bahcesehir</p>
+                                    <p> - </p>
                                 </div>
                             </div>
                             <div class="row">
@@ -275,29 +200,76 @@
                                     <p align="left">Latest Update</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p>10 Minutes Ago</p>
+                                    <p> - </p>
                                 </div>
                             </div>
 
                         </div>
                     </div>
+                    <div class="panel-default panel">
+                        <div class="panel-body">
+                            <div class="col-sm-4">
 
+                                <p align="left">Start Date</p>
+
+                                <input type="date" name="start">
+
+
+                            </div>
+                            <div class="col-sm-4">
+
+                                <p align="left">End Date</p>
+
+                                <input type="date" name="end">
+
+
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-primary">Set Time Range</button>
+                            </div>
+
+                        </div>
+                    </div>
 
                     <div id="map"></div>
 
                 </div>
 
 
-                <div class="well">
+                <div class="well" id="device_battery_well">
                     <h3 align="left">Battery</h3>
 
+                    <div class="panel-default panel">
+                        <div class="panel-body">
+                            <div class="col-sm-4">
 
-                    <canvas id="lineChart"></canvas>
+                                <p align="left">Start Date</p>
+
+                                <input type="date" name="start">
+
+
+                            </div>
+                            <div class="col-sm-4">
+
+                                <p align="left">End Date</p>
+
+                                <input type="date" name="end">
+
+
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-primary">Set Time Range</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <canvas id="lineChart_percentage"></canvas>
 
                     <script>
 
                         //line
-                        var ctxL = document.getElementById("lineChart").getContext('2d');
+                        var ctxL = document.getElementById("lineChart_percentage").getContext('2d');
                         var myLineChart = new Chart(ctxL, {
                             type: 'line',
                             data: {
@@ -355,7 +327,7 @@
                     // maybe declare these guys outside
 
 
-                   create_device_card(devices_panel_root, devices_array[i]);
+                    create_device_card(devices_panel_root, devices_array[i]);
 
 
                 }
