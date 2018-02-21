@@ -1,3 +1,37 @@
+devices = {};
+
+function fill_devices_list() {
+    var authorization = "Basic" + " " + btoa("user-8252ce9c-5960-48a2-aecc-c17212240ffd" + ":" + "pass-kaan");
+    var data = JSON.stringify(false);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            console.log(" Response : " + xhttp.responseText);
+            var json_response = JSON.parse(xhttp.responseText);
+            var devices_array = json_response["devices"];
+            var devices_panel_root = document.getElementById("devices_panel");
+
+            for (var i = 0; i < devices_array.length; i++) {
+                // maybe declare these guys outside
+
+
+                create_device_card(devices_panel_root, devices_array[i]);
+                // add the device to our memory
+                var device_id = devices_array[i]["device_id"];
+                devices[device_id] = devices_array[i];
+
+            }
+
+        }
+    };
+    xhttp.open("POST", "http://kaangoksal.com:5001/get_user_devices", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.setRequestHeader("Authorization", authorization);
+    xhttp.send(data);
+    console.log("Sent get_user_devices Request");
+
+}
+
 function create_device_card(devices_panel_root, device) {
 
     var device_name = device["device_name"];
@@ -106,6 +140,8 @@ function create_device_card(devices_panel_root, device) {
 
 function device_select(device_id)
 {
+    //this method is called by the cards, there is an embedded javascript function in every card that calls this
+    //function with their device id.
     console.log("Device selected ", device_id);
     change_color_of_device_card(device_id);
     display_device_details(device_id);
@@ -137,14 +173,105 @@ function change_color_of_device_card(device_id) {
 
 function display_device_details(device) {
  console.log(current_selected_device);
- if (device == "device1"){
+    var location_well = document.getElementById('device_location_well');
+    var device_battery_well = document.getElementById('device_battery_well');
 
-     console.log("blocked");
-     x.style.display = "block";
- } else if (device == "device2") {
+    var device_type = devices[current_selected_device]["type"];
+    console.log("Currently selected device type ", device_type);
 
-     console.log("allowed");
-     x.style.display = "none";
+
+ if (device_type == "plug") {
+
+     location_well.style.display = "none";
+     device_battery_well.style.display ="none";
+
+ } else if (device_type == "gps tracker") {
+
+     location_well.style.display = "block";
+     device_battery_well.style.display = "block";
  }
+
+}
+
+
+//line
+var ctxL = document.getElementById("lineChart_percentage").getContext('2d');
+var myLineChart = new Chart(ctxL, {
+    type: 'line',
+    data: {
+        labels: ["0", "1", "2", "3", "4", "5", "6"],
+        datasets: [
+            {
+                label: "Battery",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [100, 95, 80, 81, 56, 55]
+            }
+        ]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+fill_devices_list();
+
+
+
+
+
+function initMap() {
+    console.log("I got called");
+    var uluru = {lat: -25.363, lng: 131.044};
+    map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: uluru});
+    //var marker = new google.maps.Marker({position: uluru, map: map});
+
+}
+
+function change_map() {
+    var myLatlng = new google.maps.LatLng(41.057537, 28.696123);
+    var mapOptions = {
+        zoom: 4,
+        center: myLatlng
+    };
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        title: "Hello World!"
+    });
+
+    // To add the marker to the map, call setMap();
+    marker.setMap(map);
+
+
+    // console.log("I also got called, will change the map");
+    // initMap();
+    // var uluru = {lat: 41.057537, lng: 28.696123};
+    // var marker = new google.maps.Marker({position: uluru, map: map});
+    // // initMap();
+
+}
+
+function add_path(waypoints) {
+    // var flightPlanCoordinates = [
+    //     {lat: 37.772, lng: -122.214},
+    //     {lat: 21.291, lng: -157.821},
+    //     {lat: -18.142, lng: 178.431},
+    //     {lat: -27.467, lng: 153.027}
+    // ];
+    var path = new google.maps.Polyline({
+        path: waypoints,
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+    });
+
+    path.setMap(map);
 
 }
