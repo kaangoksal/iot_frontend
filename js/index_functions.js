@@ -1,4 +1,5 @@
-server = "http://kaangoksal.com:5001";
+// server = "http://kaangoksal.com:5001";
+server = "http://192.168.122.113:5001";
 
 function sendloginReq() {
     console.log("will send soon");
