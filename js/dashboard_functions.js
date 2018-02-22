@@ -28,7 +28,7 @@ function fill_devices_list() {
 
         }
     };
-    xhttp.open("POST", server + "/get_user_devices", true);
+    xhttp.open("POST", server + "/api/get_user_devices", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.setRequestHeader("Authorization", authorization);
     xhttp.send(data);

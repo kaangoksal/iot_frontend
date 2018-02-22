@@ -1,4 +1,5 @@
 // server = "http://kaangoksal.com:5001";
+
 server = "http://192.168.122.113:5001";
 
 function sendloginReq() {
@@ -11,7 +12,7 @@ function sendloginReq() {
     // xhttp.cookieEnabled = true;
     // xhttp.crossOrigin = true;
 
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             console.log(" Response : " + xhttp.responseText);
             var jsonfile = JSON.parse(xhttp.responseText);
@@ -32,10 +33,9 @@ function sendloginReq() {
             }
         }
     };
-    xhttp.open("POST", server + "/login", true);
+    xhttp.open("POST", server + "/api/login", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.setRequestHeader("Authorization", base64encoded);
-
 
 
     xhttp.send(data);
