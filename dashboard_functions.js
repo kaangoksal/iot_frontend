@@ -1,3 +1,7 @@
+
+
+server = "http://kaangoksal.com:5001";
+
 devices = {};
 
 function fill_devices_list() {
@@ -24,7 +28,7 @@ function fill_devices_list() {
 
         }
     };
-    xhttp.open("POST", "http://kaangoksal.com:5001/get_user_devices", true);
+    xhttp.open("POST", server + "/get_user_devices", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.setRequestHeader("Authorization", authorization);
     xhttp.send(data);
