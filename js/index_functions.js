@@ -1,6 +1,6 @@
-// server = "http://kaangoksal.com:5001";
+server = "http://kaangoksal.com:5001";
 
-server = "http://192.168.122.113:5001";
+//server = "http://192.168.122.113:5001";
 
 function sendloginReq() {
     console.log("will send soon");
@@ -18,8 +18,7 @@ function sendloginReq() {
             var jsonfile = JSON.parse(xhttp.responseText);
             if (jsonfile["code"] == 31) {
                 alert("Login Failed " + jsonfile["message"]);
-            }
-            else {
+            } else if (jsonfile["code"] == 200) {
                 localStorage.setItem("email", document.getElementsByName('email')[0].value);
                 localStorage.setItem("username", jsonfile['username']);
                 localStorage.setItem("account_type", jsonfile['account_type']);
@@ -30,6 +29,8 @@ function sendloginReq() {
                 } else {
                     window.location.replace("dashboard.html");
                 }
+            } else {
+                alert("Login Failed, unknown code");
             }
         }
     };

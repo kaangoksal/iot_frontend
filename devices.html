@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bootstrap Example</title>
+    <title>Devices</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -32,8 +32,13 @@
         }
 
         .panel-default {
-            margin-left: 1%;
-            margin-right: 1%;
+            margin-left: 0.5%;
+            margin-right: 0.5%;
+        }
+
+        .well {
+            margin-left: 0.5%;
+            margin-right: 0.5%;
         }
 
         .glyphicon-device-status {
@@ -59,8 +64,8 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Dashboard</a></li>
-                <li><a href="devices.html">Devices</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li class="active"><a href="#">Devices</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -73,28 +78,9 @@
 <div class="container-fluid text-center">
     <div class="row">
         <div class="col-sm-2 panel panel-default">
-            <div class="row panel-heading">
-                <h3>Events</h3>
-            </div>
-            <div class="panel-body">
-                <div class="alert alert-success fade in">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                    <p><strong>Connection Restored</strong></p>
-                    People are looking at your profile. Find out who.
-                </div>
-
-                <div class="alert alert-warning fade in">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                    <p><strong>Connection Lost</strong></p>
-                    Connection lost with: Rover-1
-                </div>
-            </div>
-
-        </div>
-        <div class="col-sm-4 panel panel-default">
 
             <div class="row panel-heading">
-                <h3>Devices</h3>
+                <h4>Devices</h4>
             </div>
             <div class="panel-body">
 
@@ -134,14 +120,13 @@
 
 
         </div>
-        <div class="col-sm-5 panel panel-default">
+        <div class="col-md-9 panel panel-default">
             <div class="row panel-heading">
-                <h3>Device Details</h3>
+                <h4>Device Details</h4>
             </div>
             <div class="panel-body">
-
-                <div class="well">
-                    <h3 align="left">Device Information</h3>
+                <div class="well col-sm-3">
+                    <h4 align="left">Device Information</h4>
 
                     <div class="panel-default panel">
                         <div class="panel-body">
@@ -174,8 +159,97 @@
                     </div>
                 </div>
 
-                <div class="well" id="device_location_well">
-                    <h3 align="left">Location</h3>
+
+                <div class="well col-sm-3" id="plug_state_well">
+                    <h4 align="left">Plug State</h4>
+
+                    <div class="panel-default panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p align="left">Current State</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p> - </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p align="left">Latest Update</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p> - </p>
+                                </div>
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success">On</button>
+                                <button type="button" class="btn btn-danger">Off</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="well col-sm-4" id="device_battery_well">
+                    <h4 align="left">Battery</h4>
+
+                    <div class="panel-default panel">
+                        <div class="panel-body">
+                            <div class="col-sm-4">
+
+                                <p align="left">Start Date</p>
+
+                                <input type="date" name="start">
+
+
+                            </div>
+                            <div class="col-sm-4">
+
+                                <p align="left">End Date</p>
+
+                                <input type="date" name="end">
+
+
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-primary">Set Time Range</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <canvas id="lineChart_percentage"></canvas>
+
+
+                </div>
+
+                <div class="well col-sm-4" id="raw_data_well">
+                    <h4 align="left">Raw Data</h4>
+
+
+                    <div class="list-group">
+                        <a href="#" class="list-group-item active">
+                            <h4 class="list-group-item-heading">First List Group Item Heading</h4>
+                            <p class="list-group-item-text">List Group Item Text</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">Second List Group Item Heading</h4>
+                            <p class="list-group-item-text">List Group Item Text</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">Third List Group Item Heading</h4>
+                            <p class="list-group-item-text">List Group Item Text</p>
+                        </a>
+                    </div>
+
+
+                </div>
+
+                <div class="well col-sm-4" id="device_location_well">
+                    <h4 align="left">Location</h4>
 
                     <div class="panel-default panel">
                         <div class="panel-body">
@@ -235,74 +309,6 @@
 
                 </div>
 
-                <div class="well" id="plug_state_well">
-                    <h3 align="left">Plug State</h3>
-
-                    <div class="panel-default panel">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p align="left">Current State</p>
-                                </div>
-                                <div class="col-sm-9">
-                                    <p> - </p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p align="left">Latest Update</p>
-                                </div>
-                                <div class="col-sm-9">
-                                    <p> - </p>
-                                </div>
-                            </div>
-
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-success">On</button>
-                                <button type="button" class="btn btn-danger">Off</button>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="well" id="device_battery_well">
-                    <h3 align="left">Battery</h3>
-
-                    <div class="panel-default panel">
-                        <div class="panel-body">
-                            <div class="col-sm-4">
-
-                                <p align="left">Start Date</p>
-
-                                <input type="date" name="start">
-
-
-                            </div>
-                            <div class="col-sm-4">
-
-                                <p align="left">End Date</p>
-
-                                <input type="date" name="end">
-
-
-                            </div>
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary">Set Time Range</button>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <canvas id="lineChart_percentage"></canvas>
-
-
-                </div>
-
-
-
             </div>
 
         </div>
@@ -314,12 +320,11 @@
 </footer>
 
 
-<script src="js/dashboard_functions.js"></script>
+<script src="js/devices_page_functions.js"></script>
 
 
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVYK3iQrTq30MLqLO2j7YBqUM36S8Nm9Y&callback=initMap"></script>
-
 
 
 </body>
