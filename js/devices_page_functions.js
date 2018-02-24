@@ -190,11 +190,8 @@ function create_device_card(devices_panel_root, device) {
 function device_select(device_id) {
     //this method is called by the cards, there is an embedded javascript function in every card that calls this
     //function with their device id.
-    console.log("Device selected ", device_id);
     change_color_of_device_card(device_id);
     display_device_details(device_id);
-
-    //current selected device vs previously selected device!
 
 }
 
@@ -249,7 +246,7 @@ function display_device_details(device) {
 }
 
 function initMap() {
-    console.log("I got called");
+    console.log("Google Maps Initialized");
     var uluru = {lat: -25.363, lng: 131.044};
     map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: uluru});
     //var marker = new google.maps.Marker({position: uluru, map: map});
@@ -281,6 +278,7 @@ function change_map(lat, long) {
     // // initMap();
 
 }
+
 function add_path(waypoints) {
     var path = new google.maps.Polyline({
         path: waypoints,
@@ -308,7 +306,6 @@ function update_location_trail(device_id) {
     var start_date = trail_start_date_picker.value;
     var end_date = trail_end_date_picker.value;
 
-
     var data = JSON.stringify(
         {
             "start_date": start_date,
@@ -322,7 +319,6 @@ function update_location_trail(device_id) {
             console.log(" Response : " + xhttp.responseText);
             var json_response = JSON.parse(xhttp.responseText);
             var trail = json_response["positions"];
-
 
             var bounds = new google.maps.LatLngBounds();
 
@@ -342,8 +338,4 @@ function update_location_trail(device_id) {
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
     console.log("Sent get_gps_trail Request");
-
-
-    
-
 }

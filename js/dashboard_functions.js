@@ -29,19 +29,21 @@ var myLineChart = new Chart(ctxL, {
     }
 });
 
-fill_devices_list();
+fill_devices_list(select_the_first_device);
 
-if (Object.keys(devices).length > 0) { // it means we actually kinda have a device to choose!
-    console.log("We have elements to choose from");
-    var first_key = Object.keys(devices)[0];
-    device_select(first_key);
-} else {
-    //hide all the widgeetss
+function select_the_first_device() {
+    if (Object.keys(devices).length > 0) { // it means we actually kinda have a device to choose!
+        console.log("We have elements to choose from");
+        var first_key = Object.keys(devices)[0];
+        device_select(first_key);
+    } else {
+        console.log("No devices available to select");
+    }
 }
 
 
 
-function fill_devices_list() {
+function fill_devices_list(call_back_function) {
     //var authorization = "Basic" + " " + btoa("user-8252ce9c-5960-48a2-aecc-c17212240ffd" + ":" + "pass-kaan");
     var data = JSON.stringify(false);
     var xhttp = new XMLHttpRequest();
@@ -63,7 +65,14 @@ function fill_devices_list() {
 
             }
 
+            if (typeof call_back_function == "function") {
+                // it means that we can execute it, hooray!
+                call_back_function();
+            }
+
         }
+
+
     };
     xhttp.open("POST", server + "/api/get_user_devices", true);
     xhttp.setRequestHeader("Content-type", "application/json");
@@ -183,12 +192,8 @@ function create_device_card(devices_panel_root, device) {
 function device_select(device_id) {
     //this method is called by the cards, there is an embedded javascript function in every card that calls this
     //function with their device id.
-    console.log("Device selected ", device_id);
     change_color_of_device_card(device_id);
     display_device_details(device_id);
-
-    //current selected device vs previously selected device!
-
 }
 
 function change_color_of_device_card(device_id) {
@@ -233,6 +238,8 @@ function display_device_details(device) {
         location_well.style.display = "block";
         device_battery_well.style.display = "block";
         plug_state_well.style.display = "none";
+
+        update_location_trail(current_selected_device);
     }
 
 }
@@ -275,12 +282,6 @@ function change_map(lat, long) {
 }
 
 function add_path(waypoints) {
-    // var flightPlanCoordinates = [
-    //     {lat: 37.772, lng: -122.214},
-    //     {lat: 21.291, lng: -157.821},
-    //     {lat: -18.142, lng: 178.431},
-    //     {lat: -27.467, lng: 153.027}
-    // ];
     var path = new google.maps.Polyline({
         path: waypoints,
         geodesic: true,
@@ -306,7 +307,6 @@ function update_location_trail(device_id) {
     var start_date = trail_start_date_picker.value;
     var end_date = trail_end_date_picker.value;
 
-
     var data = JSON.stringify(
         {
             "start_date": start_date,
@@ -321,23 +321,22 @@ function update_location_trail(device_id) {
             var json_response = JSON.parse(xhttp.responseText);
             var trail = json_response["positions"];
 
-            add_path(trail);
-            var lat_sum = 0;
-            var lng_sum = 0;
-            for (var i =0; i<trail.length;i++){
-                lng_sum += trail[i]["lng"];
-                lat_sum += trail[i]["lat"];
+            var bounds = new google.maps.LatLngBounds();
+
+            for (var i =0; i<trail.length;i++) {
+                var gglshit = new google.maps.LatLng(trail[i]["lat"], trail[i]["lng"]);
+                bounds.extend(gglshit);
             }
 
-            var lat_av = lat_sum/trail.length;
-            var lng_av = lng_sum/trail.length;
+            map.fitBounds(bounds);
+            add_path(trail);
 
-            change_map(lat_av,lng_av);
+
+            // change_map(lat_av,lng_av);
         }
     };
     xhttp.open("POST", server + "/api/get_gps_trail", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
     console.log("Sent get_gps_trail Request");
-
 }
