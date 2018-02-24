@@ -284,3 +284,14 @@ function add_path(waypoints) {
     path.setMap(map);
 
 }
+
+function map_get_button() {
+    console.log("Button Wurks");
+    var trail_start_date_picker = document.getElementById("trail-start-date");
+    var trail_end_date_picker = document.getElementById("trail-end-date");
+    var start_date = trail_start_date_picker.value;
+    var end_date = trail_end_date_picker.value;
+
+    console.log("Start date will be ", start_date, " and stop date will be ", end_date);
+}
+

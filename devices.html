@@ -286,7 +286,7 @@
 
                                 <p align="left">Start Date</p>
 
-                                <input type="date" name="start">
+                                <input type="date" name="start" id="trail-start-date">
 
 
                             </div>
@@ -294,13 +294,28 @@
 
                                 <p align="left">End Date</p>
 
-                                <input type="date" name="end">
+                                <input type="date" name="end" id="trail-end-date">
 
 
                             </div>
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary">Set Time Range</button>
+                                <button type="button" class="btn btn-primary" onclick="return map_get_button();">Set
+                                    Time Range
+                                </button>
                             </div>
+
+                            <script>
+                                console.log("Initializing date for... ");
+                                var current = new Date();
+                                var before = new Date(current.getTime() - 86400000);
+                                var followingDay = new Date(current.getTime() + 86400000);
+                                var trail_start_date_picker = document.getElementById("trail-start-date");
+                                var trail_end_date_picker = document.getElementById("trail-end-date");
+
+                                trail_start_date_picker.value = before.toLocaleDateString();
+                                trail_end_date_picker.value = followingDay.toLocaleDateString(); //fucking format is wrong, it has to be year-month-day
+
+                            </script>
 
                         </div>
                     </div>

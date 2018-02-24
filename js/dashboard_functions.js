@@ -1,5 +1,3 @@
-
-
 server = "http://kaangoksal.com:5001";
 
 //server = "http://192.168.122.113:5001";
@@ -53,7 +51,9 @@ function create_device_card(devices_panel_root, device) {
     new_device_panel.id = device_id;
 
     // With this function we can know which device is selected!
-    new_device_panel.onclick = function() {device_select(device_id);};
+    new_device_panel.onclick = function () {
+        device_select(device_id);
+    };
 
     devices_panel_root.appendChild(new_device_panel);
     //=======================Header==================================
@@ -141,11 +141,9 @@ function create_device_card(devices_panel_root, device) {
     p_status.textContent = "Last ping: " + device_last_ping;
 
 
-
 }
 
-function device_select(device_id)
-{
+function device_select(device_id) {
     //this method is called by the cards, there is an embedded javascript function in every card that calls this
     //function with their device id.
     console.log("Device selected ", device_id);
@@ -178,7 +176,7 @@ function change_color_of_device_card(device_id) {
 }
 
 function display_device_details(device) {
- console.log(current_selected_device);
+    console.log(current_selected_device);
     var location_well = document.getElementById('device_location_well');
     var device_battery_well = document.getElementById('device_battery_well');
     var plug_state_well = document.getElementById('plug_state_well');
@@ -187,18 +185,46 @@ function display_device_details(device) {
     console.log("Currently selected device type ", device_type);
 
 
- if (device_type == "plug") {
+    if (device_type == "plug") {
 
-     location_well.style.display = "none";
-     device_battery_well.style.display ="none";
-     plug_state_well.style.display = "block";
+        location_well.style.display = "none";
+        device_battery_well.style.display = "none";
+        plug_state_well.style.display = "block";
 
- } else if (device_type == "gps tracker") {
+    } else if (device_type == "gps tracker") {
 
-     location_well.style.display = "block";
-     device_battery_well.style.display = "block";
-     plug_state_well.style.display = "none";
- }
+        location_well.style.display = "block";
+        device_battery_well.style.display = "block";
+        plug_state_well.style.display = "none";
+    }
+
+}
+
+
+function get_gps_trail(device_id, start_date, end_date) {
+
+
+    var data = JSON.stringify(
+        {
+            "start_date": "2018-02-10",
+            "end_date": "2018-02-25",
+            "device_id": "device1"
+        });
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            console.log(" Response : " + xhttp.responseText);
+            var json_response = JSON.parse(xhttp.responseText);
+            var trail = json_response["positions"];
+
+
+        }
+    };
+    xhttp.open("POST", server + "/api/get_gps_trail", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(data);
+    console.log("Sent get_gps_trail Request");
 
 }
 
@@ -230,11 +256,8 @@ var myLineChart = new Chart(ctxL, {
 fill_devices_list();
 
 
-
-
-
 function initMap() {
-    console.log("I got called");
+    console.log("Google Maps Initialized");
     var uluru = {lat: -25.363, lng: 131.044};
     map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: uluru});
     //var marker = new google.maps.Marker({position: uluru, map: map});
