@@ -4,6 +4,43 @@ server = "http://kaangoksal.com:5001";
 
 devices = {};
 
+
+//line
+var ctxL = document.getElementById("lineChart_percentage").getContext('2d');
+var myLineChart = new Chart(ctxL, {
+    type: 'line',
+    data: {
+        labels: ["0", "1", "2", "3", "4", "5", "6"],
+        datasets: [
+            {
+                label: "Battery",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [100, 95, 80, 81, 56, 55]
+            }
+        ]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+fill_devices_list();
+
+if (Object.keys(devices).length > 0) { // it means we actually kinda have a device to choose!
+    console.log("We have elements to choose from");
+    var first_key = Object.keys(devices)[0];
+    device_select(first_key);
+} else {
+    //hide all the widgeetss
+}
+
+
+
 function fill_devices_list() {
     //var authorization = "Basic" + " " + btoa("user-8252ce9c-5960-48a2-aecc-c17212240ffd" + ":" + "pass-kaan");
     var data = JSON.stringify(false);
@@ -201,59 +238,6 @@ function display_device_details(device) {
 }
 
 
-function get_gps_trail(device_id, start_date, end_date) {
-
-
-    var data = JSON.stringify(
-        {
-            "start_date": "2018-02-10",
-            "end_date": "2018-02-25",
-            "device_id": "device1"
-        });
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            console.log(" Response : " + xhttp.responseText);
-            var json_response = JSON.parse(xhttp.responseText);
-            var trail = json_response["positions"];
-
-
-        }
-    };
-    xhttp.open("POST", server + "/api/get_gps_trail", true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(data);
-    console.log("Sent get_gps_trail Request");
-
-}
-
-
-//line
-var ctxL = document.getElementById("lineChart_percentage").getContext('2d');
-var myLineChart = new Chart(ctxL, {
-    type: 'line',
-    data: {
-        labels: ["0", "1", "2", "3", "4", "5", "6"],
-        datasets: [
-            {
-                label: "Battery",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: [100, 95, 80, 81, 56, 55]
-            }
-        ]
-    },
-    options: {
-        responsive: true
-    }
-});
-
-fill_devices_list();
 
 
 function initMap() {
@@ -264,8 +248,9 @@ function initMap() {
 
 }
 
-function change_map() {
-    var myLatlng = new google.maps.LatLng(41.057537, 28.696123);
+function change_map(lat, long) {
+    //var myLatlng = new google.maps.LatLng(41.057537, 28.696123);
+    var myLatlng = new google.maps.LatLng(lat, long);
     var mapOptions = {
         zoom: 4,
         center: myLatlng
@@ -305,5 +290,54 @@ function add_path(waypoints) {
     });
 
     path.setMap(map);
+
+}
+
+function map_get_button() {
+    update_location_trail(current_selected_device);
+}
+
+
+function update_location_trail(device_id) {
+
+    var trail_start_date_picker = document.getElementById("trail-start-date");
+    var trail_end_date_picker = document.getElementById("trail-end-date");
+
+    var start_date = trail_start_date_picker.value;
+    var end_date = trail_end_date_picker.value;
+
+
+    var data = JSON.stringify(
+        {
+            "start_date": start_date,
+            "end_date": end_date,
+            "device_id": device_id
+        });
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            console.log(" Response : " + xhttp.responseText);
+            var json_response = JSON.parse(xhttp.responseText);
+            var trail = json_response["positions"];
+
+            add_path(trail);
+            var lat_sum = 0;
+            var lng_sum = 0;
+            for (var i =0; i<trail.length;i++){
+                lng_sum += trail[i]["lng"];
+                lat_sum += trail[i]["lat"];
+            }
+
+            var lat_av = lat_sum/trail.length;
+            var lng_av = lng_sum/trail.length;
+
+            change_map(lat_av,lng_av);
+        }
+    };
+    xhttp.open("POST", server + "/api/get_gps_trail", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(data);
+    console.log("Sent get_gps_trail Request");
 
 }

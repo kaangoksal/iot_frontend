@@ -8,7 +8,7 @@ function sendloginReq() {
     // var base64encoded = "Basic" + " " + btoa("kaangoksal@gmail.com" + ":" + "pass-kaan");
     var data = JSON.stringify(false);
     var xhttp = new XMLHttpRequest();
-    // xhttp.withCredentials = true;
+    xhttp.withCredentials = true;
     // xhttp.cookieEnabled = true;
     // xhttp.crossOrigin = true;
 

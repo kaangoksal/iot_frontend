@@ -294,6 +294,28 @@
                                 <button type="button" class="btn btn-primary">Set Time Range</button>
                             </div>
 
+                            <script>
+                                console.log("Initializing date for... ");
+                                var current = new Date();
+                                var before = new Date(current.getTime() - 86400000);
+                                var followingDay = new Date(current.getTime() + 86400000);
+                                var trail_start_date_picker = document.getElementById("trail-start-date");
+                                var trail_end_date_picker = document.getElementById("trail-end-date");
+
+
+
+                                var before_string = before.toISOString();
+                                before_string = before_string.slice(0,before_string.indexOf("T"));
+                                trail_start_date_picker.value = before_string;
+
+                                var following_day_string = followingDay.toISOString();
+                                following_day_string = following_day_string.slice(0,following_day_string.indexOf("T"));
+
+                                trail_end_date_picker.value = following_day_string; //fucking format is wrong, it has to be year-month-day
+
+                            </script>
+
+
                         </div>
                     </div>
 
@@ -315,21 +337,6 @@
 
 
 <script src="js/dashboard_functions.js"></script>
-
-<script>
-
-    console.log("Initializing date for... ");
-    var current = new Date();
-    var before = new Date(current.getTime() - 86400000);
-    var followingDay = new Date(current.getTime() + 86400000);
-    var trail_start_date_picker = document.getElementById("trail-start-date");
-    var trail_end_date_picker = document.getElementById("trail-end-date");
-
-    trail_start_date_picker.value = before.toLocaleDateString();
-    trail_end_date_picker.value = followingDay.toLocaleDateString();
-
-</script>
-
 
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVYK3iQrTq30MLqLO2j7YBqUM36S8Nm9Y&callback=initMap"></script>

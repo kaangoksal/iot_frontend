@@ -312,8 +312,16 @@
                                 var trail_start_date_picker = document.getElementById("trail-start-date");
                                 var trail_end_date_picker = document.getElementById("trail-end-date");
 
-                                trail_start_date_picker.value = before.toLocaleDateString();
-                                trail_end_date_picker.value = followingDay.toLocaleDateString(); //fucking format is wrong, it has to be year-month-day
+
+
+                                var before_string = before.toISOString();
+                                before_string = before_string.slice(0,before_string.indexOf("T"));
+                                trail_start_date_picker.value = before_string;
+
+                                var following_day_string = followingDay.toISOString();
+                                following_day_string = following_day_string.slice(0,following_day_string.indexOf("T"));
+
+                                trail_end_date_picker.value = following_day_string; //fucking format is wrong, it has to be year-month-day
 
                             </script>
 

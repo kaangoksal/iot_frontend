@@ -1,12 +1,47 @@
-
-
 server = "http://kaangoksal.com:5001";
 
 //server = "http://192.168.122.113:5001";
 
 devices = {};
+current_selected_device = "";
 
-function fill_devices_list() {
+//line
+var ctxL = document.getElementById("lineChart_percentage").getContext('2d');
+var myLineChart = new Chart(ctxL, {
+    type: 'line',
+    data: {
+        labels: ["0", "1", "2", "3", "4", "5", "6"],
+        datasets: [
+            {
+                label: "Battery",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [100, 95, 80, 81, 56, 55]
+            }
+        ]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+fill_devices_list(select_the_first_device);
+
+function select_the_first_device() {
+    if (Object.keys(devices).length > 0) { // it means we actually kinda have a device to choose!
+        console.log("We have elements to choose from");
+        var first_key = Object.keys(devices)[0];
+        device_select(first_key);
+    } else {
+        console.log("No devices available to select");
+    }
+}
+
+function fill_devices_list(call_back_function) {
     //var authorization = "Basic" + " " + btoa("user-8252ce9c-5960-48a2-aecc-c17212240ffd" + ":" + "pass-kaan");
     var data = JSON.stringify(false);
     var xhttp = new XMLHttpRequest();
@@ -28,7 +63,14 @@ function fill_devices_list() {
 
             }
 
+            if (typeof call_back_function == "function") {
+                // it means that we can execute it, hooray!
+                call_back_function();
+            }
+
         }
+
+
     };
     xhttp.open("POST", server + "/api/get_user_devices", true);
     xhttp.setRequestHeader("Content-type", "application/json");
@@ -53,7 +95,9 @@ function create_device_card(devices_panel_root, device) {
     new_device_panel.id = device_id;
 
     // With this function we can know which device is selected!
-    new_device_panel.onclick = function() {device_select(device_id);};
+    new_device_panel.onclick = function () {
+        device_select(device_id);
+    };
 
     devices_panel_root.appendChild(new_device_panel);
     //=======================Header==================================
@@ -141,11 +185,9 @@ function create_device_card(devices_panel_root, device) {
     p_status.textContent = "Last ping: " + device_last_ping;
 
 
-
 }
 
-function device_select(device_id)
-{
+function device_select(device_id) {
     //this method is called by the cards, there is an embedded javascript function in every card that calls this
     //function with their device id.
     console.log("Device selected ", device_id);
@@ -158,7 +200,7 @@ function device_select(device_id)
 
 function change_color_of_device_card(device_id) {
 
-    if (typeof current_selected_device === 'undefined') {
+    if (current_selected_device === "") {
         var device_root = document.getElementById(device_id);
         var heading = device_root.children[0];
         heading.className = device_root.className + " panel-heading-custom";
@@ -178,7 +220,7 @@ function change_color_of_device_card(device_id) {
 }
 
 function display_device_details(device) {
- console.log(current_selected_device);
+    console.log(current_selected_device);
     var location_well = document.getElementById('device_location_well');
     var device_battery_well = document.getElementById('device_battery_well');
     var plug_state_well = document.getElementById('plug_state_well');
@@ -187,51 +229,24 @@ function display_device_details(device) {
     console.log("Currently selected device type ", device_type);
 
 
- if (device_type == "plug") {
+    if (device_type == "plug") {
 
-     location_well.style.display = "none";
-     device_battery_well.style.display ="none";
-     plug_state_well.style.display = "block";
+        location_well.style.display = "none";
+        device_battery_well.style.display = "none";
+        plug_state_well.style.display = "block";
 
- } else if (device_type == "gps tracker") {
+    } else if (device_type == "gps tracker") {
 
-     location_well.style.display = "block";
-     device_battery_well.style.display = "block";
-     plug_state_well.style.display = "none";
- }
+        location_well.style.display = "block";
+        device_battery_well.style.display = "block";
+        plug_state_well.style.display = "none";
+
+
+
+        update_location_trail(current_selected_device);
+    }
 
 }
-
-
-//line
-var ctxL = document.getElementById("lineChart_percentage").getContext('2d');
-var myLineChart = new Chart(ctxL, {
-    type: 'line',
-    data: {
-        labels: ["0", "1", "2", "3", "4", "5", "6"],
-        datasets: [
-            {
-                label: "Battery",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: [100, 95, 80, 81, 56, 55]
-            }
-        ]
-    },
-    options: {
-        responsive: true
-    }
-});
-
-fill_devices_list();
-
-
-
-
 
 function initMap() {
     console.log("I got called");
@@ -241,8 +256,9 @@ function initMap() {
 
 }
 
-function change_map() {
-    var myLatlng = new google.maps.LatLng(41.057537, 28.696123);
+function change_map(lat, long) {
+    //var myLatlng = new google.maps.LatLng(41.057537, 28.696123);
+    var myLatlng = new google.maps.LatLng(lat, long);
     var mapOptions = {
         zoom: 4,
         center: myLatlng
@@ -265,14 +281,7 @@ function change_map() {
     // // initMap();
 
 }
-
 function add_path(waypoints) {
-    // var flightPlanCoordinates = [
-    //     {lat: 37.772, lng: -122.214},
-    //     {lat: 21.291, lng: -157.821},
-    //     {lat: -18.142, lng: 178.431},
-    //     {lat: -27.467, lng: 153.027}
-    // ];
     var path = new google.maps.Polyline({
         path: waypoints,
         geodesic: true,
@@ -286,12 +295,55 @@ function add_path(waypoints) {
 }
 
 function map_get_button() {
-    console.log("Button Wurks");
+    update_location_trail(current_selected_device);
+}
+
+
+
+function update_location_trail(device_id) {
+
     var trail_start_date_picker = document.getElementById("trail-start-date");
     var trail_end_date_picker = document.getElementById("trail-end-date");
+
     var start_date = trail_start_date_picker.value;
     var end_date = trail_end_date_picker.value;
 
-    console.log("Start date will be ", start_date, " and stop date will be ", end_date);
-}
 
+    var data = JSON.stringify(
+        {
+            "start_date": start_date,
+            "end_date": end_date,
+            "device_id": device_id
+        });
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            console.log(" Response : " + xhttp.responseText);
+            var json_response = JSON.parse(xhttp.responseText);
+            var trail = json_response["positions"];
+
+
+            var bounds = new google.maps.LatLngBounds();
+
+            for (var i =0; i<trail.length;i++) {
+                var gglshit = new google.maps.LatLng(trail[i]["lat"], trail[i]["lng"]);
+                bounds.extend(gglshit);
+            }
+
+            map.fitBounds(bounds);
+            add_path(trail);
+
+
+            // change_map(lat_av,lng_av);
+        }
+    };
+    xhttp.open("POST", server + "/api/get_gps_trail", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(data);
+    console.log("Sent get_gps_trail Request");
+
+
+    
+
+}
