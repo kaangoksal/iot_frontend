@@ -217,13 +217,27 @@ function change_color_of_device_card(device_id) {
 }
 
 function display_device_details(device) {
-    console.log(current_selected_device);
-    var location_well = document.getElementById('device_location_well');
-    var device_battery_well = document.getElementById('device_battery_well');
-    var plug_state_well = document.getElementById('plug_state_well');
 
-    var device_type = devices[current_selected_device]["type"];
+    console.log(current_selected_device);
+
+    var device_object = devices[current_selected_device];
+    var location_well = document.getElementById('location_tab_box');
+    var device_battery_well = document.getElementById('battery_tab_box');
+    var plug_state_well = document.getElementById('plug_state_tab_box');
+
+    var device_username_element = document.getElementById('device_username_text');
+    device_username_element.textContent =  device_object["device_id"];
+
+
+    var device_name_element = document.getElementById('device_name_text');
+    device_name_element.textContent = device_object["device_name"];
+
+    var device_latest_ping = document.getElementById('latest_ping_text');
+    device_latest_ping.textContent = device_object["last_ping"];
+
+    var device_type = device_object["type"];
     console.log("Currently selected device type ", device_type);
+
 
 
     if (device_type == "plug") {
@@ -232,6 +246,8 @@ function display_device_details(device) {
         device_battery_well.style.display = "none";
         plug_state_well.style.display = "block";
 
+        get_raw_data();
+
     } else if (device_type == "gps tracker") {
 
         location_well.style.display = "block";
@@ -239,7 +255,7 @@ function display_device_details(device) {
         plug_state_well.style.display = "none";
 
 
-
+        get_raw_data();
         update_location_trail(current_selected_device);
     }
 
@@ -296,10 +312,7 @@ function map_get_button() {
     update_location_trail(current_selected_device);
 }
 
-
-
 function update_location_trail(device_id) {
-
     var trail_start_date_picker = document.getElementById("trail-start-date");
     var trail_end_date_picker = document.getElementById("trail-end-date");
 
@@ -316,7 +329,7 @@ function update_location_trail(device_id) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-            console.log(" Response : " + xhttp.responseText);
+            //console.log(" Response : " + xhttp.responseText);
             var json_response = JSON.parse(xhttp.responseText);
             var trail = json_response["positions"];
 
@@ -337,5 +350,77 @@ function update_location_trail(device_id) {
     xhttp.open("POST", server + "/api/get_gps_trail", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
-    console.log("Sent get_gps_trail Request");
+    console.log("Sent get_gps_trail request");
+}
+
+function get_raw_data() {
+    var raw_data_start_date_picker = document.getElementById("raw_data-start-date");
+    var raw_data_end_date_picker = document.getElementById("raw_data-end-date");
+
+    var start_date = raw_data_start_date_picker.value;
+    var end_date = raw_data_end_date_picker.value;
+
+    var data = JSON.stringify(
+        {
+            "start_date": start_date,
+            "end_date": end_date,
+            "device_id": current_selected_device,
+            "page": 0,
+            "count": 50
+        });
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            //console.log(" Response : " + xhttp.responseText);
+            var json_response = JSON.parse(xhttp.responseText);
+            var raw_data_array = json_response["data"];
+
+            populate_raw_data_list(raw_data_array);
+
+            // change_map(lat_av,lng_av);
+        }
+    };
+    xhttp.open("POST", server + "/api/get_raw_data", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(data);
+    console.log("Sent get_raw_data request");
+
+}
+
+function populate_raw_data_list(raw_data_array){
+
+    var raw_data_panel_root = document.getElementById("raw_data_list");
+
+    for (var i = 0; i < raw_data_array.length; i++) {
+        // maybe declare these guys outside
+        raw_data_panel_root.appendChild(create_raw_data_card(raw_data_array[i]));
+
+
+    }
+
+
+}
+
+function create_raw_data_card(raw_data) {
+
+    var new_a = document.createElement("a");
+    new_a.setAttribute("data-toggle", "collapse");
+    new_a.href = "#collapse"+raw_data["id"];
+    new_a.className = "list-group-item";
+
+    var new_p = document.createElement("p");
+    new_p.className = "list-group-item-text";
+    new_p.textContent = "Packet Id: " + raw_data["id"] + "  Server Received: " + raw_data["server_time"];
+    new_a.appendChild(new_p);
+
+    var new_div_collapse = document.createElement("div");
+    new_div_collapse.className = "panel-collapse panel-body collapse";
+    new_div_collapse.id = "collapse"+raw_data["id"];
+    new_div_collapse.textContent = raw_data["data"];
+    new_a.appendChild(new_div_collapse);
+
+    return new_a;
+
+
 }
