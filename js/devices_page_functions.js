@@ -457,3 +457,30 @@ function create_raw_data_card(raw_data) {
 
 
 }
+
+function toggle_plug(state) {
+
+    var data = JSON.stringify(
+        {
+            "state":state,
+            "device_id": current_selected_device
+        });
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            //console.log(" Response : " + xhttp.responseText);
+            var json_response = JSON.parse(xhttp.responseText);
+            var raw_data_array = json_response["data"];
+
+            populate_raw_data_list(raw_data_array);
+
+            // change_map(lat_av,lng_av);
+        }
+    };
+    xhttp.open("POST", server + "/api/set_state", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(data);
+    console.log("Sent get_raw_data request");
+
+}
