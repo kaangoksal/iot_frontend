@@ -74,7 +74,7 @@
     <div class="row">
         <div class="col-sm-2 panel panel-default">
             <div class="row panel-heading">
-                <h3>Events</h3>
+                <h4>Events</h4>
             </div>
             <div class="panel-body">
                 <div class="alert alert-success fade in">
@@ -94,7 +94,7 @@
         <div class="col-sm-4 panel panel-default">
 
             <div class="row panel-heading">
-                <h3>Devices</h3>
+                <h4>Devices</h4>
             </div>
             <div class="panel-body">
 
@@ -136,12 +136,12 @@
         </div>
         <div class="col-sm-5 panel panel-default">
             <div class="row panel-heading">
-                <h3>Device Details</h3>
+                <h4>Device Details</h4>
             </div>
             <div class="panel-body">
 
                 <div class="well">
-                    <h3 align="left">Device Information</h3>
+                    <h4 align="left">Device Information</h4>
 
                     <div class="panel-default panel">
                         <div class="panel-body">
@@ -158,7 +158,7 @@
                                     <p align="left">Device Name</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p id="device_name_test"> - </p>
+                                    <p id="device_name_text"> - </p>
                                 </div>
                             </div>
                             <div class="row">
@@ -183,8 +183,8 @@
                                 <div class="col-sm-3">
                                     <p align="left">Current Coordinates</p>
                                 </div>
-                                <div class="col-sm-9">
-                                    <p> - </p>
+                                <div class="col-sm-9" >
+                                            <p id="current_coordinates_text"> - </p>
                                 </div>
                             </div>
                             <div class="row">
@@ -192,7 +192,7 @@
                                     <p align="left">Current Location</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p> - </p>
+                                    <p id="current_location_text"> - </p>
                                 </div>
                             </div>
                             <div class="row">
@@ -200,7 +200,7 @@
                                     <p align="left">Latest Update</p>
                                 </div>
                                 <div class="col-sm-9">
-                                    <p> - </p>
+                                    <p id="latest_update_text"> - </p>
                                 </div>
                             </div>
 
@@ -225,7 +225,7 @@
 
                             </div>
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary">Set Time Range</button>
+                                <button type="button" class="btn btn-primary" onclick="return map_get_button();">Query</button>
                             </div>
 
 
@@ -270,7 +270,7 @@
 
 
                 <div class="well" id="device_battery_well">
-                    <h3 align="left">Battery</h3>
+                    <h4 align="left">Battery</h4>
 
                     <div class="panel-default panel">
                         <div class="panel-body">

@@ -147,23 +147,23 @@ function create_device_card(devices_panel_root, device) {
     panel_body_div.appendChild(info_col);
 
     //=============row in info col===============
-    var row_battery = document.createElement("div");
-    row_battery.className = "row";
-
-    info_col.appendChild(row_battery);
-
-    // battery status
-
-    var p_battery = document.createElement("p");
-    p_battery.align = "left";
-
-    row_battery.appendChild(p_battery);
-
-    var glyphicon_battery = document.createElement("span");
-    glyphicon_battery.className = "glyphicon glyphicon-flash glyphicon-device-status";
-    p_battery.appendChild(glyphicon_battery);
-
-    p_battery.textContent = "8 hours of battery available";
+    // var row_battery = document.createElement("div");
+    // row_battery.className = "row";
+    //
+    // info_col.appendChild(row_battery);
+    //
+    // // battery status
+    //
+    // var p_battery = document.createElement("p");
+    // p_battery.align = "left";
+    //
+    // row_battery.appendChild(p_battery);
+    //
+    // var glyphicon_battery = document.createElement("span");
+    // glyphicon_battery.className = "glyphicon glyphicon-flash glyphicon-device-status";
+    // p_battery.appendChild(glyphicon_battery);
+    //
+    // p_battery.textContent = "8 hours of battery available";
 
     //=============row in info col===============
     var row_status = document.createElement("div");
@@ -174,7 +174,7 @@ function create_device_card(devices_panel_root, device) {
     // system status
 
     var p_status = document.createElement("p");
-    p_status.align = "left";
+    p_status.align = "right";
 
     row_status.appendChild(p_status);
 
@@ -216,7 +216,7 @@ function change_color_of_device_card(device_id) {
     }
 }
 
-function display_device_details(device) {
+function display_device_details() {
 
     console.log(current_selected_device);
 
@@ -351,6 +351,39 @@ function update_location_trail(device_id) {
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
     console.log("Sent get_gps_trail request");
+    //send the next query for the location widget
+    update_location_widget();
+}
+
+function update_location_widget() {
+
+    var data = JSON.stringify(
+        {
+            "device_id": current_selected_device
+        });
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            //console.log(" Response : " + xhttp.responseText);
+            var json_response = JSON.parse(xhttp.responseText);
+            var position = json_response["position"];
+
+            var cct_element = document.getElementById("current_coordinates_text");
+            cct_element.textContent = "Latitude: " + position["lat"] + " Longitude: " + position["lng"];
+
+            var clt_element = document.getElementById("current_location_text");
+
+            var lut_element = document.getElementById("latest_update_text");
+            lut_element.textContent = json_response["date"]
+
+        }
+    };
+    xhttp.open("POST", server + "/api/get_latest_location", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(data);
+    console.log("Sent update_location_widget request");
+
 }
 
 function get_raw_data() {

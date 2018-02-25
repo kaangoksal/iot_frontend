@@ -41,8 +41,6 @@ function select_the_first_device() {
     }
 }
 
-
-
 function fill_devices_list(call_back_function) {
     //var authorization = "Basic" + " " + btoa("user-8252ce9c-5960-48a2-aecc-c17212240ffd" + ":" + "pass-kaan");
     var data = JSON.stringify(false);
@@ -217,13 +215,24 @@ function change_color_of_device_card(device_id) {
     }
 }
 
-function display_device_details(device) {
+function display_device_details() {
     console.log(current_selected_device);
     var location_well = document.getElementById('device_location_well');
     var device_battery_well = document.getElementById('device_battery_well');
     var plug_state_well = document.getElementById('plug_state_well');
 
-    var device_type = devices[current_selected_device]["type"];
+    var device_object = devices[current_selected_device];
+
+    var device_username_element = document.getElementById('device_username_text');
+    device_username_element.textContent =  device_object["device_id"];
+
+    var device_name_element = document.getElementById('device_name_text');
+    device_name_element.textContent = device_object["device_name"];
+
+    var device_latest_ping = document.getElementById('latest_ping_text');
+    device_latest_ping.textContent = device_object["last_ping"];
+
+    var device_type = device_object["type"];
     console.log("Currently selected device type ", device_type);
 
 
@@ -243,9 +252,6 @@ function display_device_details(device) {
     }
 
 }
-
-
-
 
 function initMap() {
     console.log("Google Maps Initialized");
@@ -298,7 +304,6 @@ function map_get_button() {
     update_location_trail(current_selected_device);
 }
 
-
 function update_location_trail(device_id) {
 
     var trail_start_date_picker = document.getElementById("trail-start-date");
@@ -339,4 +344,36 @@ function update_location_trail(device_id) {
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
     console.log("Sent get_gps_trail Request");
+    update_location_widget();
+}
+
+function update_location_widget() {
+
+    var data = JSON.stringify(
+        {
+            "device_id": current_selected_device
+        });
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            //console.log(" Response : " + xhttp.responseText);
+            var json_response = JSON.parse(xhttp.responseText);
+            var position = json_response["position"];
+
+            var cct_element = document.getElementById("current_coordinates_text");
+            cct_element.textContent = "Latitude: " + position["lat"] + " Longitude: " + position["lng"];
+
+            var clt_element = document.getElementById("current_location_text");
+
+            var lut_element = document.getElementById("latest_update_text");
+            lut_element.textContent = json_response["date"]
+
+        }
+    };
+    xhttp.open("POST", server + "/api/get_latest_location", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(data);
+    console.log("Sent update_location_widget request");
+
 }
