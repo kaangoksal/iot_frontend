@@ -248,6 +248,7 @@ function display_device_details() {
         device_battery_well.style.display = "none";
         plug_state_well.style.display = "block";
 
+        update_plug_state_widget();
         get_raw_data();
 
     } else if (device_type == "gps tracker") {
@@ -389,6 +390,40 @@ function update_location_widget() {
 }
 
 function update_plug_state_widget() {
+    var data = JSON.stringify(
+        {
+        "device_id":current_selected_device
+    });
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState ==4 && xhttp.status == 200){
+            var json_response = JSON.parse(xhttp.responseText);
+            var current_state = json_response["current_state"];
+
+            var cste = document.getElementById("plug_current_state_text");
+            cste.textContent = current_state.toString();
+
+            var ponb = document.getElementById("plug_on_button");
+            var poffb = document.getElementById("plug_off_button");
+
+            if (current_state) {
+                poffb.style.display = "block";
+                ponb.style.display = "none";
+
+            } else {
+                poffb.style.display = "none";
+                ponb.style.display = "block";
+            }
+
+
+        }
+
+    };
+    xhttp.open("POST", server + "/api/get_state_user", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(data);
+    console.log("Sent get plug state request");
 
 }
 
@@ -476,12 +511,13 @@ function toggle_plug(state) {
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             //console.log(" Response : " + xhttp.responseText);
-            var json_response = JSON.parse(xhttp.responseText);
-            var raw_data_array = json_response["data"];
-
-            populate_raw_data_list(raw_data_array);
+            // var json_response = JSON.parse(xhttp.responseText);
+            // var raw_data_array = json_response["data"];
+            //
+            // populate_raw_data_list(raw_data_array);
 
             // change_map(lat_av,lng_av);
+            update_plug_state_widget();
         }
     };
     xhttp.open("POST", server + "/api/set_state", true);
