@@ -1,6 +1,8 @@
-server = "http://kaangoksal.com:5001";
+//server = "http://kaangoksal.com:5001";
 
 //server = "http://192.168.122.113:5001";
+
+server = "http://diyprototypes.com";
 
 devices = {};
 current_selected_device = "";
@@ -383,6 +385,10 @@ function update_location_widget() {
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
     console.log("Sent update_location_widget request");
+
+}
+
+function update_plug_state_widget() {
 
 }
 
