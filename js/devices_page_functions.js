@@ -309,6 +309,41 @@ function add_path(waypoints) {
 
     path.setMap(map);
 
+    for (var i = 0; i < waypoints.length; i++) {
+        var data_id = waypoints[i]["id"];
+        var data_date = waypoints[i]["date"];
+        var lat= waypoints[i]["lat"];
+        var lng = waypoints[i]["lng"];
+
+        var contentString = "data_id: " + data_id + " date: "
+            + data_date + " Lat: " + lat + " Lng: " + lng;
+
+        //console.log("Circle added ", waypoints[i]["lat"], " long ", waypoints[i]["lng"]);
+        var data_point_circle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#DA2',
+            fillOpacity: 0.35,
+            map: map,
+            center: {"lat":lat , "lng": lng},
+            radius: 5
+          });
+
+
+
+
+        google.maps.event.addListener(data_point_circle, 'click', function() {
+            var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+            infowindow.position({"lat":lat , "lng": lng});
+          infowindow.open(map);
+        });
+
+
+    }
+
 }
 
 function map_get_button() {
@@ -338,10 +373,11 @@ function update_location_trail(device_id) {
 
             var bounds = new google.maps.LatLngBounds();
 
-            for (var i =0; i<trail.length;i++) {
+            for (var i =0; i < trail.length;i++) {
                 var gglshit = new google.maps.LatLng(trail[i]["lat"], trail[i]["lng"]);
                 bounds.extend(gglshit);
             }
+
 
             map.fitBounds(bounds);
             add_path(trail);
