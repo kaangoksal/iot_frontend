@@ -333,13 +333,13 @@ function add_path(waypoints) {
 
 
 
-        google.maps.event.addListener(data_point_circle, 'click', function() {
-            var infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
-            infowindow.position({"lat":lat , "lng": lng});
-          infowindow.open(map);
-        });
+        google.maps.event.addListener(data_point_circle, 'click', function(contentString, lat, lng) {
+            return function() {
+                var infowindow = new google.maps.InfoWindow({ content: contentString });
+                infowindow.setPosition({"lat":lat , "lng": lng});
+                infowindow.open(map);
+            }
+        } (contentString, lat,lng));
 
 
     }
