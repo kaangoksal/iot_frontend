@@ -6,32 +6,13 @@ server = "http://diyprototypes.com";
 
 devices = {};
 current_selected_device = "";
+time_zone_offset = new Date().getTimezoneOffset() * -1;
 
-//line
-var ctxL = document.getElementById("lineChart_percentage").getContext('2d');
-var myLineChart = new Chart(ctxL, {
-    type: 'line',
-    data: {
-        labels: ["0", "1", "2", "3", "4", "5", "6"],
-        datasets: [
-            {
-                label: "Battery",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: [100, 95, 80, 81, 56, 55]
-            }
-        ]
-    },
-    options: {
-        responsive: true
-    }
-});
 
 fill_devices_list(select_the_first_device);
+initialize_default_values_of_location_tab();
+initialize_battery_graph();
+
 
 function select_the_first_device() {
     if (Object.keys(devices).length > 0) { // it means we actually kinda have a device to choose!
@@ -228,7 +209,7 @@ function display_device_details() {
     var plug_state_well = document.getElementById('plug_state_tab_box');
 
     var device_username_element = document.getElementById('device_username_text');
-    device_username_element.textContent =  device_object["device_id"];
+    device_username_element.textContent = device_object["device_id"];
 
 
     var device_name_element = document.getElementById('device_name_text');
@@ -239,7 +220,6 @@ function display_device_details() {
 
     var device_type = device_object["type"];
     console.log("Currently selected device type ", device_type);
-
 
 
     if (device_type == "plug") {
@@ -312,7 +292,7 @@ function add_path(waypoints) {
     for (var i = 0; i < waypoints.length; i++) {
         var data_id = waypoints[i]["id"];
         var data_date = waypoints[i]["date"];
-        var lat= waypoints[i]["lat"];
+        var lat = waypoints[i]["lat"];
         var lng = waypoints[i]["lng"];
 
         var contentString = "data_id: " + data_id + " date: "
@@ -326,20 +306,18 @@ function add_path(waypoints) {
             fillColor: '#DA2',
             fillOpacity: 0.35,
             map: map,
-            center: {"lat":lat , "lng": lng},
+            center: {"lat": lat, "lng": lng},
             radius: 5
-          });
+        });
 
 
-
-
-        google.maps.event.addListener(data_point_circle, 'click', function(contentString, lat, lng) {
-            return function() {
-                var infowindow = new google.maps.InfoWindow({ content: contentString });
-                infowindow.setPosition({"lat":lat , "lng": lng});
+        google.maps.event.addListener(data_point_circle, 'click', function (contentString, lat, lng) {
+            return function () {
+                var infowindow = new google.maps.InfoWindow({content: contentString});
+                infowindow.setPosition({"lat": lat, "lng": lng});
                 infowindow.open(map);
             }
-        } (contentString, lat,lng));
+        }(contentString, lat, lng));
 
 
     }
@@ -373,7 +351,7 @@ function update_location_trail(device_id) {
 
             var bounds = new google.maps.LatLngBounds();
 
-            for (var i =0; i < trail.length;i++) {
+            for (var i = 0; i < trail.length; i++) {
                 var gglshit = new google.maps.LatLng(trail[i]["lat"], trail[i]["lng"]);
                 bounds.extend(gglshit);
             }
@@ -428,12 +406,12 @@ function update_location_widget() {
 function update_plug_state_widget() {
     var data = JSON.stringify(
         {
-        "device_id":current_selected_device
-    });
+            "device_id": current_selected_device
+        });
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
-        if (xhttp.readyState ==4 && xhttp.status == 200){
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
             var json_response = JSON.parse(xhttp.responseText);
             var current_state = json_response["current_state"];
 
@@ -498,7 +476,7 @@ function get_raw_data() {
 
 }
 
-function populate_raw_data_list(raw_data_array){
+function populate_raw_data_list(raw_data_array) {
 
     var raw_data_panel_root = document.getElementById("raw_data_list");
 
@@ -516,7 +494,7 @@ function create_raw_data_card(raw_data) {
 
     var new_a = document.createElement("a");
     new_a.setAttribute("data-toggle", "collapse");
-    new_a.href = "#collapse"+raw_data["id"];
+    new_a.href = "#collapse" + raw_data["id"];
     new_a.className = "list-group-item";
 
     var new_p = document.createElement("p");
@@ -526,7 +504,7 @@ function create_raw_data_card(raw_data) {
 
     var new_div_collapse = document.createElement("div");
     new_div_collapse.className = "panel-collapse panel-body collapse";
-    new_div_collapse.id = "collapse"+raw_data["id"];
+    new_div_collapse.id = "collapse" + raw_data["id"];
     new_div_collapse.textContent = raw_data["data"];
     new_a.appendChild(new_div_collapse);
 
@@ -539,7 +517,7 @@ function toggle_plug(state) {
 
     var data = JSON.stringify(
         {
-            "state":state,
+            "state": state,
             "device_id": current_selected_device
         });
 
@@ -561,4 +539,65 @@ function toggle_plug(state) {
     xhttp.send(data);
     console.log("Sent get_raw_data request");
 
+}
+
+function get_offset_date(current_date, offset) {
+    var offset_date = current_date + offset;
+    return offset_date
+}
+
+function initialize_battery_graph() {
+//line
+    var ctxL = document.getElementById("lineChart_percentage").getContext('2d');
+    var myLineChart = new Chart(ctxL, {
+        type: 'line',
+        data: {
+            labels: ["0", "1", "2", "3", "4", "5", "6"],
+            datasets: [
+                {
+                    label: "Battery",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [100, 95, 80, 81, 56, 55]
+                }
+            ]
+        },
+        options: {
+            responsive: true
+        }
+    });
+}
+
+function initialize_default_values_of_location_tab() {
+
+    console.log("Initializing date for... ");
+    var current = new Date();
+    var before = new Date(current.getTime() - 86400000);
+    var followingDay = new Date(current.getTime() + 86400000);
+    var trail_start_date_picker = document.getElementById("trail-start-date");
+    var trail_end_date_picker = document.getElementById("trail-end-date");
+
+    var tst = document.getElementById("trail-start-time");
+    var tet = document.getElementById("trail-end-time");
+    console.log("Time Zone offset I'm using ", time_zone_offset);
+    var timenow = get_offset_date(new Date(), time_zone_offset);
+    var timenow_string = timenow.toTimeString();
+
+    //tst.value = timenow_string.substring(0, timenow_string.indexOf(" "));
+    tst.value = "00:00:00";
+    tet.value = timenow_string.substring(0, timenow_string.indexOf(" "));
+
+
+    var before_string = current.toISOString();
+    before_string = before_string.slice(0, before_string.indexOf("T"));
+    trail_start_date_picker.value = before_string;
+
+    var following_day_string = current.toISOString();
+    following_day_string = following_day_string.slice(0, following_day_string.indexOf("T"));
+
+    trail_end_date_picker.value = following_day_string; //fucking format is wrong, it has to be year-month-day
 }

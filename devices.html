@@ -298,60 +298,98 @@
                             </div>
                             <div class="panel-default panel">
                                 <div class="panel-body">
-                                    <div class="col-sm-4">
+                                    <div class="row">
+                                        <div class="col-sm-5">
 
-                                        <p align="left">Start Date</p>
+                                            <p align="left">Start Date</p>
 
-                                        <input type="date" name="start" id="trail-start-date">
-                                        <input type="time" name="start" id="trail-start-time">
+                                            <input type="date" name="start" id="trail-start-date">
+                                            <input type="time" name="start" id="trail-start-time">
 
 
+                                        </div>
+                                        <div class="col-sm-5">
+
+                                            <p align="left">End Date</p>
+
+                                            <input type="date" name="end" id="trail-end-date">
+                                            <input type="time" name="start" id="trail-end-time">
+
+
+                                        </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <select class="form-control" id="location_time_zone_picker">
+                                                <option value="-5">Eastern Standard Time, UTC-5</option>
+                                                <option value="0">UTC</option>
+                                                <option value="3">Istanbul, UTC+3</option>
 
-                                        <p align="left">End Date</p>
+                                                <option value="840">UTC+14</option>
+                                                <option value="825">UTC+13:45</option>
+                                                <option value="780">UTC+13</option>
+                                                <option value="720">UTC+12</option>
+                                                <option value="660">UTC+11</option>
+                                                <option value="630">UTC+10:30</option>
+                                                <option value="600">UTC+10</option>
+                                                <option value="570">UTC+9:30</option>
+                                                <option value="540">UTC+9</option>
+                                                <option value="525">UTC+8:45</option>
+                                                <option value="510">UTC+8:30</option>
+                                                <option value="480">UTC+8</option>
+                                                <option value="420">UTC+7</option>
+                                                <option value="390">UTC+6:30</option>
+                                                <option value="360">UTC+6</option>
+                                                <option value="345">UTC+5:45</option>
+                                                <option value="330">UTC+5:30, New Delhi</option>
+                                                <option value="300">UTC+5</option>
+                                                <option value="270">UTC+4:30</option>
+                                                <option value="240">UTC+4</option>
+                                                <option value="210">UTC+3:30</option>
+                                                <option value="180">UTC+3 Istanbul</option>
+                                                <option value="120">UTC+2 Israel</option>
+                                                <option value="60">UTC+1</option>
+                                                <option value="0">UTC</option>
+                                                <option value="-60">UTC-1</option>
+                                                <option value="-120">UTC-2</option>
+                                                <option value="-180">UTC-3</option>
+                                                <option value="-210">UTC-3:30</option>
+                                                <option value="-240">UTC-4</option>
+                                                <option value="-300">UTC-5, U.S. Eastern Standard Time</option>
+                                                <option value="-360">UTC-6</option>
+                                                <option value="-420">UTC-7</option>
+                                                <option value="-480">UTC-8</option>
+                                                <option value="-540">UTC-9</option>
+                                                <option value="-570">UTC-9:30</option>
+                                                <option value="-600">UTC-10</option>
+                                                <option value="-660">UTC-11</option>
+                                                <option value="-720">UTC-12</option>
+                                            </select>
+                                            <script>
+                                                console.log("Initializing time zone picker");
+                                                var tpe = document.getElementById("location_time_zone_picker");
 
-                                        <input type="date" name="end" id="trail-end-date">
-                                        <input type="time" name="start" id="trail-end-time">
+                                                var options_array = tpe.options;
+
+                                                var client_time_zone = new Date().getTimezoneOffset()*-1;
+
+                                                for (var i = 0; i < options_array.length; i++) {
+                                                    if (client_time_zone == options_array[i].value) {
+                                                        options_array[i].selected = true;
+                                                        time_zone_offset = options_array[i].value;
+                                                        console.log("Time Zone Picked as ", options_array[i].text);
+                                                    }
+                                                }
 
 
+                                            </script>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <button type="button" class="btn btn-primary"
+                                                    onclick="return map_get_button();">Query
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-3">
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="return map_get_button();">Set
-                                            Time Range
-                                        </button>
-                                    </div>
-
-                                    <script>
-                                        console.log("Initializing date for... ");
-                                        var current = new Date();
-                                        var before = new Date(current.getTime() - 86400000);
-                                        var followingDay = new Date(current.getTime() + 86400000);
-                                        var trail_start_date_picker = document.getElementById("trail-start-date");
-                                        var trail_end_date_picker = document.getElementById("trail-end-date");
-
-                                        var tst = document.getElementById("trail-start-time");
-                                        var tet = document.getElementById("trail-end-time");
-
-                                        var timenow = new Date();
-                                        var timenow_string = timenow.toTimeString();
-
-                                        //tst.value = timenow_string.substring(0, timenow_string.indexOf(" "));
-                                        tst.value = "00:00:00";
-                                        tet.value = timenow_string.substring(0, timenow_string.indexOf(" "));
-
-
-                                        var before_string = current.toISOString();
-                                        before_string = before_string.slice(0, before_string.indexOf("T"));
-                                        trail_start_date_picker.value = before_string;
-
-                                        var following_day_string = current.toISOString();
-                                        following_day_string = following_day_string.slice(0, following_day_string.indexOf("T"));
-
-                                        trail_end_date_picker.value = following_day_string; //fucking format is wrong, it has to be year-month-day
-
-                                    </script>
 
                                 </div>
                             </div>
@@ -404,7 +442,7 @@
 
                         <div class="panel-default panel">
                             <div class="panel-body">
-                                <div class="col-sm-4">
+                                <div class="col-sm-5">
 
                                     <p align="left">Start Date</p>
 
@@ -413,7 +451,7 @@
 
 
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-5">
 
                                     <p align="left">End Date</p>
 
@@ -422,8 +460,8 @@
 
 
                                 </div>
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-primary">Set Time Range</button>
+                                <div class="col-sm-1">
+                                    <button type="button" class="btn btn-primary">Query</button>
                                 </div>
 
                             </div>
@@ -558,6 +596,7 @@
 
 
 <script src="js/devices_page_functions.js"></script>
+<script src="js/moment-with-locales.js"></script>
 
 
 <script async defer
