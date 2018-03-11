@@ -1,8 +1,13 @@
+
+
 //server = "http://kaangoksal.com:5001";
 
 //server = "http://192.168.122.113:5001";
 
+
 server = "http://diyprototypes.com";
+
+
 
 devices = {};
 current_selected_device = "";
@@ -13,14 +18,13 @@ fill_devices_list(select_the_first_device);
 initialize_default_values_of_location_tab();
 initialize_battery_graph();
 
-
 function select_the_first_device() {
     if (Object.keys(devices).length > 0) { // it means we actually kinda have a device to choose!
-        console.log("We have elements to choose from");
+        //console.log("We have elements to choose from");
         var first_key = Object.keys(devices)[0];
         device_select(first_key);
     } else {
-        console.log("No devices available to select");
+        //console.log("No devices available to select");
     }
 }
 
@@ -30,7 +34,7 @@ function fill_devices_list(call_back_function) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-            console.log(" Response : " + xhttp.responseText);
+            //console.log(" Response : " + xhttp.responseText);
             var json_response = JSON.parse(xhttp.responseText);
             var devices_array = json_response["devices"];
             var devices_panel_root = document.getElementById("devices_panel");
@@ -59,7 +63,7 @@ function fill_devices_list(call_back_function) {
     xhttp.setRequestHeader("Content-type", "application/json");
     //xhttp.setRequestHeader("Authorization", authorization);
     xhttp.send(data);
-    console.log("Sent get_user_devices Request");
+    //console.log("Sent get_user_devices Request");
 
 }
 
@@ -113,7 +117,7 @@ function create_device_card(devices_panel_root, device) {
     } else if (device_type == "wifi_stalker") {
         device_image.src = "images/wifistalker.png";
     } else {
-        console.log(device_type);
+        //console.log(device_type);
         device_image.src = "images/unknown_device.png";
     }
 
@@ -201,7 +205,7 @@ function change_color_of_device_card(device_id) {
 
 function display_device_details() {
 
-    console.log(current_selected_device);
+    //console.log(current_selected_device);
 
     var device_object = devices[current_selected_device];
     var location_well = document.getElementById('location_tab_box');
@@ -219,7 +223,7 @@ function display_device_details() {
     device_latest_ping.textContent = device_object["last_ping"];
 
     var device_type = device_object["type"];
-    console.log("Currently selected device type ", device_type);
+    //console.log("Currently selected device type ", device_type);
 
 
     if (device_type == "plug") {
@@ -247,47 +251,29 @@ function display_device_details() {
 function initMap() {
     console.log("Google Maps Initialized");
     var uluru = {lat: -25.363, lng: 131.044};
-    map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: uluru});
-    //var marker = new google.maps.Marker({position: uluru, map: map});
-
-}
-
-function change_map(lat, long) {
-    //var myLatlng = new google.maps.LatLng(41.057537, 28.696123);
-    var myLatlng = new google.maps.LatLng(lat, long);
-    var mapOptions = {
-        zoom: 4,
-        center: myLatlng
-    };
-    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-    var marker = new google.maps.Marker({
-        position: myLatlng,
-        title: "Hello World!"
-    });
-
-    // To add the marker to the map, call setMap();
-    marker.setMap(map);
-
-
-    // console.log("I also got called, will change the map");
-    // initMap();
-    // var uluru = {lat: 41.057537, lng: 28.696123};
-    // var marker = new google.maps.Marker({position: uluru, map: map});
-    // // initMap();
+    google_map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: uluru});
 
 }
 
 function add_path(waypoints) {
+    var lineSymbol = {
+          path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+        };
+
     var path = new google.maps.Polyline({
         path: waypoints,
+        icons: [{
+            icon: lineSymbol,
+            offset: '100%',
+            repeat: '80px'
+          }],
         geodesic: true,
         strokeColor: '#FF0000',
         strokeOpacity: 1.0,
         strokeWeight: 2
     });
 
-    path.setMap(map);
+    path.setMap(google_map);
 
     for (var i = 0; i < waypoints.length; i++) {
         var data_id = waypoints[i]["id"];
@@ -305,7 +291,7 @@ function add_path(waypoints) {
             strokeWeight: 2,
             fillColor: '#DA2',
             fillOpacity: 0.35,
-            map: map,
+            map: google_map,
             center: {"lat": lat, "lng": lng},
             radius: 5
         });
@@ -315,7 +301,7 @@ function add_path(waypoints) {
             return function () {
                 var infowindow = new google.maps.InfoWindow({content: contentString});
                 infowindow.setPosition({"lat": lat, "lng": lng});
-                infowindow.open(map);
+                infowindow.open(google_map);
             }
         }(contentString, lat, lng));
 
@@ -332,8 +318,8 @@ function update_location_trail(device_id) {
     var trail_start_date_picker = document.getElementById("trail-start-date");
     var trail_end_date_picker = document.getElementById("trail-end-date");
 
-    var start_date = trail_start_date_picker.value;
-    var end_date = trail_end_date_picker.value;
+    var start_date = local_time_to_UTC(trail_start_date_picker.value);
+    var end_date = local_time_to_UTC(trail_end_date_picker.value);
 
     var data = JSON.stringify(
         {
@@ -357,7 +343,7 @@ function update_location_trail(device_id) {
             }
 
 
-            map.fitBounds(bounds);
+            google_map.fitBounds(bounds);
             add_path(trail);
 
 
@@ -367,7 +353,7 @@ function update_location_trail(device_id) {
     xhttp.open("POST", server + "/api/get_gps_trail", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
-    console.log("Sent get_gps_trail request");
+    //console.log("Sent get_gps_trail request");
     //send the next query for the location widget
     update_location_widget();
 }
@@ -399,7 +385,7 @@ function update_location_widget() {
     xhttp.open("POST", server + "/api/get_latest_location", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
-    console.log("Sent update_location_widget request");
+    //console.log("Sent update_location_widget request");
 
 }
 
@@ -437,7 +423,7 @@ function update_plug_state_widget() {
     xhttp.open("POST", server + "/api/get_state_user", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
-    console.log("Sent get plug state request");
+    //console.log("Sent get plug state request");
 
 }
 
@@ -472,7 +458,7 @@ function get_raw_data() {
     xhttp.open("POST", server + "/api/get_raw_data", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
-    console.log("Sent get_raw_data request");
+    //console.log("Sent get_raw_data request");
 
 }
 
@@ -537,14 +523,17 @@ function toggle_plug(state) {
     xhttp.open("POST", server + "/api/set_state", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
-    console.log("Sent get_raw_data request");
+    //console.log("Sent get_raw_data request");
 
 }
 
-function get_offset_date(current_date, offset) {
-    var offset_date = current_date + offset;
-    return offset_date
-}
+// function get_offset_date(current_date, offset) {
+//     console.log("Current date without offset: ", current_date, " Offset: ", offset );
+//     var offset_date = moment(current_date).add(offset, 'minutes');
+//     offset_date = offset_date["_d"];
+//     console.log("Date after offset: ", offset_date);
+//     return offset_date
+// }
 
 function initialize_battery_graph() {
 //line
@@ -574,29 +563,29 @@ function initialize_battery_graph() {
 
 function initialize_default_values_of_location_tab() {
 
-    console.log("Initializing date for... ");
+    //console.log("Initializing date for... ");
     var current = new Date();
-    var before = new Date(current.getTime() - 86400000);
-    var followingDay = new Date(current.getTime() + 86400000);
+
     var trail_start_date_picker = document.getElementById("trail-start-date");
     var trail_end_date_picker = document.getElementById("trail-end-date");
 
     var tst = document.getElementById("trail-start-time");
     var tet = document.getElementById("trail-end-time");
-    console.log("Time Zone offset I'm using ", time_zone_offset);
-    var timenow = get_offset_date(new Date(), time_zone_offset);
-    var timenow_string = timenow.toTimeString();
+    //console.log("Time Zone offset I'm using ", time_zone_offset);
 
-    //tst.value = timenow_string.substring(0, timenow_string.indexOf(" "));
+    var timenow = UTC_to_local_time(new Date());
+
+    var timenow_string = new Date().toTimeString(); //This stupid function converts to Local Timezone
+
     tst.value = "00:00:00";
     tet.value = timenow_string.substring(0, timenow_string.indexOf(" "));
 
 
-    var before_string = current.toISOString();
+    var before_string = timenow.toISOString();
     before_string = before_string.slice(0, before_string.indexOf("T"));
     trail_start_date_picker.value = before_string;
 
-    var following_day_string = current.toISOString();
+    var following_day_string = timenow.toISOString();
     following_day_string = following_day_string.slice(0, following_day_string.indexOf("T"));
 
     trail_end_date_picker.value = following_day_string; //fucking format is wrong, it has to be year-month-day
