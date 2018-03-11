@@ -318,8 +318,23 @@ function update_location_trail(device_id) {
     var trail_start_date_picker = document.getElementById("trail-start-date");
     var trail_end_date_picker = document.getElementById("trail-end-date");
 
-    var start_date = local_time_to_UTC(trail_start_date_picker.value);
-    var end_date = local_time_to_UTC(trail_end_date_picker.value);
+    var start_time_picker = document.getElementById("trail-start-time");
+    var end_time_picker = document.getElementById("trail-end-time");
+
+
+    var start_date = combine_date_string_time_string(trail_start_date_picker.value, start_time_picker.value);
+    var end_date = combine_date_string_time_string(trail_end_date_picker.value, end_time_picker.value);
+
+
+
+    start_date = local_time_to_UTC(start_date);
+    end_date = local_time_to_UTC(end_date);
+    start_date = start_date.toISOString().replace("T", " ").replace("Z", "");
+    end_date = end_date.toISOString().replace("T", " ").replace("Z", "");
+
+    console.log("Start Date ", start_date);
+    console.log("End Date ", end_date);
+
 
     var data = JSON.stringify(
         {
