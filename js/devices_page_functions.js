@@ -78,6 +78,12 @@ function create_time_line() {
       [ 'Vice President', 'George Clinton', new Date(1805, 2, 4), new Date(1812, 3, 20)], */
 
     ]);
+    options = {
+  title: 'My Daily Activities'
+  ,chartArea:{left:0,top:0,width:"100%",height:"100%"}
+  ,height: 500
+  ,width: 500
+};
 
     chart.draw(dataTable);
   }
