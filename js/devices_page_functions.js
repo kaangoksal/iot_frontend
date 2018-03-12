@@ -281,6 +281,7 @@ function get_path_color(speed){
 }
 
 function calculate_average_speed(w1, w2) {
+    //TODO normally this should be relative to roads, it should be relative to max min speeds of the roads.
     if (w1["speed"] > 0 && w2["speed"] > 0){
         return (w1["speed"] + w2["speed"])/2
     } else if (w1["speed"] > 0) {
