@@ -17,6 +17,7 @@ time_zone_offset = new Date().getTimezoneOffset() * -1;
 fill_devices_list(select_the_first_device);
 initialize_default_values_of_location_tab();
 initialize_battery_graph();
+create_time_line();
 
 function select_the_first_device() {
     if (Object.keys(devices).length > 0) { // it means we actually kinda have a device to choose!
@@ -27,6 +28,60 @@ function select_the_first_device() {
         //console.log("No devices available to select");
     }
 }
+
+function create_time_line() {
+  google.charts.load("current", {packages:["timeline"]});
+  google.charts.setOnLoadCallback(drawChart);
+  function drawChart() {
+
+    var container = document.getElementById('timeline1');
+    var chart = new google.visualization.Timeline(container);
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: 'string', id: 'Position' });
+    dataTable.addColumn({ type: 'string', id: 'Name' });
+    dataTable.addColumn({ type: 'date', id: 'Start' });
+    dataTable.addColumn({ type: 'date', id: 'End' });
+    dataTable.addRows([
+
+    [ 'Monday', 'Active', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,11,0,1,1) ],
+      [ 'Monday', 'Inactive', new Date(1789, 2, 4,11,0,1,1), new Date(1789, 2, 4,14,10,1,1) ],
+      [ 'Monday', 'Active', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,17,0,0,1) ],
+      [ 'Monday', 'Inactive', new Date(1789, 2, 4,17,0,1,1), new Date(1789, 2, 4,18,10,1,1) ],
+
+
+    [ 'Tuesday', 'Active', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,12,0,1,1) ],
+      [ 'Tuesday', 'Inactive', new Date(1789, 2, 4,12,0,1,1), new Date(1789, 2, 4,14,10,1,1) ],
+      [ 'Tuesday', 'Active', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,17,10,10,1) ],
+      [ 'Tuesday', 'Shock', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,14,20,10,1) ],
+
+    	[ 'Wednesday', 'Active', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,12,0,1,1) ],
+      [ 'Wednesday', 'Inactive', new Date(1789, 2, 4,12,0,1,1), new Date(1789, 2, 4,16,10,1,1) ],
+      [ 'Wednesday', 'Active', new Date(1789, 2, 4,16,10,1,1), new Date(1789, 2, 4,17,10,10,1) ],
+      [ 'Wednesday', 'Shock', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,14,20,10,1) ],
+
+
+      [ 'Thursday', 'Active', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,11,0,1,1) ],
+      [ 'Thursday', 'Inactive', new Date(1789, 2, 4,12,0,1,1), new Date(1789, 2, 4,14,10,1,1) ],
+      [ 'Thursday', 'Active', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,17,10,10,1) ],
+      [ 'Thursday', 'Shock', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,14,20,10,1) ],
+
+      [ 'Friday', 'Inactive', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,11,0,1,1) ],
+      [ 'Friday', 'Inactive', new Date(1789, 2, 4,12,0,1,1), new Date(1789, 2, 4,14,10,1,1) ],
+      [ 'Friday', 'Shock', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,14,20,10,1) ],
+
+      [ 'Saturday', 'Active', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,12,0,1,1) ],
+      [ 'Saturday', 'Inactive', new Date(1789, 2, 4,12,0,1,1), new Date(1789, 2, 4,14,10,1,1) ],
+
+/*       [ 'Vice President', 'John Adams', new Date(1789, 3, 21), new Date(1797, 2, 4)],
+      [ 'Vice President', 'Thomas Jefferson', new Date(1797, 2, 4), new Date(1801, 2, 4)],
+      [ 'Vice President', 'Aaron Burr', new Date(1801, 2, 4), new Date(1805, 2, 4)],
+      [ 'Vice President', 'George Clinton', new Date(1805, 2, 4), new Date(1812, 3, 20)], */
+
+    ]);
+
+    chart.draw(dataTable);
+  }
+  }
 
 function fill_devices_list(call_back_function) {
     //var authorization = "Basic" + " " + btoa("user-8252ce9c-5960-48a2-aecc-c17212240ffd" + ":" + "pass-kaan");
