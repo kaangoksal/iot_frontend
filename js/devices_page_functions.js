@@ -255,34 +255,95 @@ function initMap() {
 
 }
 
+function get_path_color(speed){
+    var fastest = "#49ff00";
+
+    var fast = "#297a01";
+    var medium = "#ffff00";
+    var slow = "#ff8000";
+    var slowest = "#ff0000";
+    var unknown = "#585858";
+
+    if (speed > 80) {
+        return fastest;
+    } else if (speed > 65){
+        return fast;
+    } else if (speed > 50) {
+        return medium;
+    } else if (speed > 30) {
+        return slow;
+    } else if (speed > 0) {
+        return slowest;
+    } else {
+        return unknown;
+    }
+
+}
+
+function calculate_average_speed(w1, w2) {
+    if (w1["speed"] > 0 && w2["speed"] > 0){
+        return (w1["speed"] + w2["speed"])/2
+    } else if (w1["speed"] > 0) {
+        return w1["speed"];
+    } else if (w2["speed"] > 0) {
+        return w2["speed"];
+    } else {
+        return 0;
+    }
+}
+
 function add_path(waypoints) {
     var lineSymbol = {
           path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
         };
 
-    var path = new google.maps.Polyline({
-        path: waypoints,
+    for (var j = 0; j+1<waypoints.length; j++){
+        var first = waypoints[j];
+        var other_one = waypoints[j+1];
+
+        var path = new google.maps.Polyline({
+        path: [first, other_one],
         icons: [{
             icon: lineSymbol,
             offset: '100%',
             repeat: '80px'
           }],
         geodesic: true,
-        strokeColor: '#FF0000',
+        strokeColor: get_path_color(calculate_average_speed(first,other_one)),
         strokeOpacity: 1.0,
         strokeWeight: 2
-    });
 
-    path.setMap(google_map);
+    });
+        path.setMap(google_map);
+
+
+
+    }
+    // var path = new google.maps.Polyline({
+    //     path: waypoints,
+    //     icons: [{
+    //         icon: lineSymbol,
+    //         offset: '100%',
+    //         repeat: '80px'
+    //       }],
+    //     geodesic: true,
+    //     strokeColor: '#FF0000',
+    //     strokeOpacity: 1.0,
+    //     strokeWeight: 2
+    // });
+    //
+    // path.setMap(google_map);
 
     for (var i = 0; i < waypoints.length; i++) {
-        var data_id = waypoints[i]["id"];
-        var data_date = waypoints[i]["date"];
-        var lat = waypoints[i]["lat"];
-        var lng = waypoints[i]["lng"];
+        var current_data = waypoints[i];
+        var data_id = current_data["id"];
+        var data_date = current_data["date"];
+        var lat = current_data["lat"];
+        var lng = current_data["lng"];
+        var speed = current_data["speed"];
 
-        var contentString = "data_id: " + data_id + " date: "
-            + data_date + " Lat: " + lat + " Lng: " + lng;
+        var contentString = "data_id: " + data_id + " date(UTC): "
+            + data_date + " Lat: " + lat + " Lng: " + lng + " speed: " + speed;
 
         //console.log("Circle added ", waypoints[i]["lat"], " long ", waypoints[i]["lng"]);
         var data_point_circle = new google.maps.Circle({
@@ -324,7 +385,9 @@ function update_location_trail(device_id) {
 
     var start_date = combine_date_string_time_string(trail_start_date_picker.value, start_time_picker.value);
     var end_date = combine_date_string_time_string(trail_end_date_picker.value, end_time_picker.value);
-
+    console.log("End date picker date ",trail_end_date_picker.value, " time ",end_time_picker.value );
+    console.log("End date local ", end_date);
+    console.log("Start date local ", start_date);
 
 
     start_date = local_time_to_UTC(start_date);
