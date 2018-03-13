@@ -1,12 +1,9 @@
-
-
 //server = "http://kaangoksal.com:5001";
 
 //server = "http://192.168.122.113:5001";
 
 
 server = "http://diyprototypes.com";
-
 
 
 devices = {};
@@ -30,64 +27,65 @@ function select_the_first_device() {
 }
 
 function create_time_line() {
-  google.charts.load("current", {packages:["timeline"]});
-  google.charts.setOnLoadCallback(drawChart);
-  function drawChart() {
+    google.charts.load("current", {packages: ["timeline"]});
+    google.charts.setOnLoadCallback(drawChart);
 
-    var container = document.getElementById('timeline1');
-    var chart = new google.visualization.Timeline(container);
-    var dataTable = new google.visualization.DataTable();
-    dataTable.addColumn({ type: 'string', id: 'Position' });
-    dataTable.addColumn({ type: 'string', id: 'Name' });
-    dataTable.addColumn({ type: 'date', id: 'Start' });
-    dataTable.addColumn({ type: 'date', id: 'End' });
-    dataTable.addRows([
+    function drawChart() {
 
-    [ 'Monday', 'Active', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,11,0,1,1) ],
-      [ 'Monday', 'Inactive', new Date(1789, 2, 4,11,0,1,1), new Date(1789, 2, 4,14,10,1,1) ],
-      [ 'Monday', 'Active', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,17,0,0,1) ],
-      [ 'Monday', 'Inactive', new Date(1789, 2, 4,17,0,1,1), new Date(1789, 2, 4,18,10,1,1) ],
+        var container = document.getElementById('timeline1');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn({type: 'string', id: 'Position'});
+        dataTable.addColumn({type: 'string', id: 'Name'});
+        dataTable.addColumn({type: 'date', id: 'Start'});
+        dataTable.addColumn({type: 'date', id: 'End'});
+        dataTable.addRows([
 
-
-    [ 'Tuesday', 'Active', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,12,0,1,1) ],
-      [ 'Tuesday', 'Inactive', new Date(1789, 2, 4,12,0,1,1), new Date(1789, 2, 4,14,10,1,1) ],
-      [ 'Tuesday', 'Active', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,17,10,10,1) ],
-      [ 'Tuesday', 'Shock', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,14,20,10,1) ],
-
-    	[ 'Wednesday', 'Active', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,12,0,1,1) ],
-      [ 'Wednesday', 'Inactive', new Date(1789, 2, 4,12,0,1,1), new Date(1789, 2, 4,16,10,1,1) ],
-      [ 'Wednesday', 'Active', new Date(1789, 2, 4,16,10,1,1), new Date(1789, 2, 4,17,10,10,1) ],
-      [ 'Wednesday', 'Shock', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,14,20,10,1) ],
+            ['Monday', 'Active', new Date(1789, 2, 4, 10, 0, 1, 0), new Date(1789, 2, 4, 11, 0, 1, 1)],
+            ['Monday', 'Inactive', new Date(1789, 2, 4, 11, 0, 1, 1), new Date(1789, 2, 4, 14, 10, 1, 1)],
+            ['Monday', 'Active', new Date(1789, 2, 4, 14, 10, 1, 1), new Date(1789, 2, 4, 17, 0, 0, 1)],
+            ['Monday', 'Inactive', new Date(1789, 2, 4, 17, 0, 1, 1), new Date(1789, 2, 4, 18, 10, 1, 1)],
 
 
-      [ 'Thursday', 'Active', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,11,0,1,1) ],
-      [ 'Thursday', 'Inactive', new Date(1789, 2, 4,12,0,1,1), new Date(1789, 2, 4,14,10,1,1) ],
-      [ 'Thursday', 'Active', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,17,10,10,1) ],
-      [ 'Thursday', 'Shock', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,14,20,10,1) ],
+            ['Tuesday', 'Active', new Date(1789, 2, 4, 10, 0, 1, 0), new Date(1789, 2, 4, 12, 0, 1, 1)],
+            ['Tuesday', 'Inactive', new Date(1789, 2, 4, 12, 0, 1, 1), new Date(1789, 2, 4, 14, 10, 1, 1)],
+            ['Tuesday', 'Active', new Date(1789, 2, 4, 14, 10, 1, 1), new Date(1789, 2, 4, 17, 10, 10, 1)],
+            ['Tuesday', 'Shock', new Date(1789, 2, 4, 14, 10, 1, 1), new Date(1789, 2, 4, 14, 20, 10, 1)],
 
-      [ 'Friday', 'Inactive', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,11,0,1,1) ],
-      [ 'Friday', 'Inactive', new Date(1789, 2, 4,12,0,1,1), new Date(1789, 2, 4,14,10,1,1) ],
-      [ 'Friday', 'Shock', new Date(1789, 2, 4,14,10,1,1), new Date(1789, 2, 4,14,20,10,1) ],
+            ['Wednesday', 'Active', new Date(1789, 2, 4, 10, 0, 1, 0), new Date(1789, 2, 4, 12, 0, 1, 1)],
+            ['Wednesday', 'Inactive', new Date(1789, 2, 4, 12, 0, 1, 1), new Date(1789, 2, 4, 16, 10, 1, 1)],
+            ['Wednesday', 'Active', new Date(1789, 2, 4, 16, 10, 1, 1), new Date(1789, 2, 4, 17, 10, 10, 1)],
+            ['Wednesday', 'Shock', new Date(1789, 2, 4, 14, 10, 1, 1), new Date(1789, 2, 4, 14, 20, 10, 1)],
 
-      [ 'Saturday', 'Active', new Date(1789, 2, 4,10,0,1,0), new Date(1789, 2, 4,12,0,1,1) ],
-      [ 'Saturday', 'Inactive', new Date(1789, 2, 4,12,0,1,1), new Date(1789, 2, 4,14,10,1,1) ],
 
-/*       [ 'Vice President', 'John Adams', new Date(1789, 3, 21), new Date(1797, 2, 4)],
-      [ 'Vice President', 'Thomas Jefferson', new Date(1797, 2, 4), new Date(1801, 2, 4)],
-      [ 'Vice President', 'Aaron Burr', new Date(1801, 2, 4), new Date(1805, 2, 4)],
-      [ 'Vice President', 'George Clinton', new Date(1805, 2, 4), new Date(1812, 3, 20)], */
+            ['Thursday', 'Active', new Date(1789, 2, 4, 10, 0, 1, 0), new Date(1789, 2, 4, 11, 0, 1, 1)],
+            ['Thursday', 'Inactive', new Date(1789, 2, 4, 12, 0, 1, 1), new Date(1789, 2, 4, 14, 10, 1, 1)],
+            ['Thursday', 'Active', new Date(1789, 2, 4, 14, 10, 1, 1), new Date(1789, 2, 4, 17, 10, 10, 1)],
+            ['Thursday', 'Shock', new Date(1789, 2, 4, 14, 10, 1, 1), new Date(1789, 2, 4, 14, 20, 10, 1)],
 
-    ]);
-    options = {
-  title: 'My Daily Activities'
-  ,chartArea:{left:0,top:0,width:"100%",height:"100%"}
-  ,height: 500
-  ,width: 500
-};
+            ['Friday', 'Inactive', new Date(1789, 2, 4, 10, 0, 1, 0), new Date(1789, 2, 4, 11, 0, 1, 1)],
+            ['Friday', 'Inactive', new Date(1789, 2, 4, 12, 0, 1, 1), new Date(1789, 2, 4, 14, 10, 1, 1)],
+            ['Friday', 'Shock', new Date(1789, 2, 4, 14, 10, 1, 1), new Date(1789, 2, 4, 14, 20, 10, 1)],
 
-    chart.draw(dataTable);
-  }
-  }
+            ['Saturday', 'Active', new Date(1789, 2, 4, 10, 0, 1, 0), new Date(1789, 2, 4, 12, 0, 1, 1)],
+            ['Saturday', 'Inactive', new Date(1789, 2, 4, 12, 0, 1, 1), new Date(1789, 2, 4, 14, 10, 1, 1)],
+
+            /*       [ 'Vice President', 'John Adams', new Date(1789, 3, 21), new Date(1797, 2, 4)],
+                  [ 'Vice President', 'Thomas Jefferson', new Date(1797, 2, 4), new Date(1801, 2, 4)],
+                  [ 'Vice President', 'Aaron Burr', new Date(1801, 2, 4), new Date(1805, 2, 4)],
+                  [ 'Vice President', 'George Clinton', new Date(1805, 2, 4), new Date(1812, 3, 20)], */
+
+        ]);
+        options = {
+            title: 'My Daily Activities'
+            , chartArea: {left: 0, top: 0, width: "100%", height: "100%"}
+            , height: 500
+            , width: 500
+        };
+
+        chart.draw(dataTable);
+    }
+}
 
 function fill_devices_list(call_back_function) {
     //var authorization = "Basic" + " " + btoa("user-8252ce9c-5960-48a2-aecc-c17212240ffd" + ":" + "pass-kaan");
@@ -316,7 +314,7 @@ function initMap() {
 
 }
 
-function get_path_color(speed){
+function get_path_color(speed) {
     var fastest = "#49ff00";
 
     var fast = "#297a01";
@@ -327,7 +325,7 @@ function get_path_color(speed){
 
     if (speed > 80) {
         return fastest;
-    } else if (speed > 65){
+    } else if (speed > 65) {
         return fast;
     } else if (speed > 50) {
         return medium;
@@ -343,8 +341,8 @@ function get_path_color(speed){
 
 function calculate_average_speed(w1, w2) {
     //TODO normally this should be relative to roads, it should be relative to max min speeds of the roads.
-    if (w1["speed"] > 0 && w2["speed"] > 0){
-        return (w1["speed"] + w2["speed"])/2
+    if (w1["speed"] > 0 && w2["speed"] > 0) {
+        return (w1["speed"] + w2["speed"]) / 2
     } else if (w1["speed"] > 0) {
         return w1["speed"];
     } else if (w2["speed"] > 0) {
@@ -356,28 +354,27 @@ function calculate_average_speed(w1, w2) {
 
 function add_path(waypoints) {
     var lineSymbol = {
-          path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
-        };
+        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+    };
 
-    for (var j = 0; j+1<waypoints.length; j++){
+    for (var j = 0; j + 1 < waypoints.length; j++) {
         var first = waypoints[j];
-        var other_one = waypoints[j+1];
+        var other_one = waypoints[j + 1];
 
         var path = new google.maps.Polyline({
-        path: [first, other_one],
-        icons: [{
-            icon: lineSymbol,
-            offset: '100%',
-            repeat: '80px'
-          }],
-        geodesic: true,
-        strokeColor: get_path_color(calculate_average_speed(first,other_one)),
-        strokeOpacity: 1.0,
-        strokeWeight: 2
+            path: [first, other_one],
+            icons: [{
+                icon: lineSymbol,
+                offset: '100%',
+                repeat: '80px'
+            }],
+            geodesic: true,
+            strokeColor: get_path_color(calculate_average_speed(first, other_one)),
+            strokeOpacity: 1.0,
+            strokeWeight: 2
 
-    });
+        });
         path.setMap(google_map);
-
 
 
     }
@@ -447,7 +444,7 @@ function update_location_trail(device_id) {
 
     var start_date = combine_date_string_time_string(trail_start_date_picker.value, start_time_picker.value);
     var end_date = combine_date_string_time_string(trail_end_date_picker.value, end_time_picker.value);
-    console.log("End date picker date ",trail_end_date_picker.value, " time ",end_time_picker.value );
+    console.log("End date picker date ", trail_end_date_picker.value, " time ", end_time_picker.value);
     console.log("End date local ", end_date);
     console.log("Start date local ", start_date);
 
