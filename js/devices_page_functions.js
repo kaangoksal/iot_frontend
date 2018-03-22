@@ -592,7 +592,7 @@ function get_raw_data() {
             // change_map(lat_av,lng_av);
         }
     };
-    xhttp.open("POST", server + "/api/get_raw_data", true);
+    xhttp.open("POST", server + "/api/v1/get_raw_data", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
     //console.log("Sent get_raw_data request");
