@@ -86,124 +86,339 @@
 
 <div class="container-fluid text-center">
     <div class="row">
-        <div class="col-sm-2 panel panel-default">
+        <div class="col-sm-2">
+            <div class=" panel panel-default">
 
-            <div class="row panel-heading">
-                <h4>Devices</h4>
-            </div>
-            <div class="panel-body">
-
-                <div class="row" id="devices_panel">
-
-
-                    <!--<div class="panel panel-default">-->
-                    <!--<div class="panel-heading">-->
-                    <!--<h4>GPS Tracker 1</h4>-->
-                    <!--</div>-->
-                    <!--<div class="panel-body">-->
-                    <!--<div class="col-sm-3">-->
-                    <!--<img src="images/gpstracker.png" class="img-circle" height="55" width="55" alt="Avatar">-->
-                    <!--</div>-->
-                    <!--<div class="col-sm-9">-->
-                    <!--<div class="row">-->
-
-                    <!--<p align="left">-->
-                    <!--<span class="glyphicon glyphicon-flash glyphicon-device-status"></span>-->
-                    <!--8 Hours of-->
-                    <!--Battery available </p>-->
-
-                    <!--</div>-->
-                    <!--<div class="row">-->
-                    <!--<p align="left"><span-->
-                    <!--class="glyphicon glyphicon-ok-sign glyphicon-device-status"></span> All-->
-                    <!--Systems Operational </p>-->
-
-                    <!--</div>-->
-
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
-
+                <div class="panel-heading">
+                    <h4>Devices</h4>
                 </div>
+                <div class="panel-body">
+
+                    <div id="devices_panel">
+
+
+                    </div>
+                </div>
+
             </div>
-
-
         </div>
-        <div class="col-md-9 panel panel-default">
-            <div class="row panel-heading">
-                <h4>Device Details</h4>
-            </div>
-            <div class="panel-body">
+        <div class="col-md-10">
+            <div class=" panel panel-default">
+                <div class="panel-heading">
+                    <h4>Device Details</h4>
+                </div>
+                <div class="panel-body">
 
-                <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#dashboard_tab">Dashboard</a></li>
-                    <li id="location_tab_box"><a data-toggle="tab" href="#location_tab">Location</a></li>
-                    <li id="battery_tab_box"><a data-toggle="tab" href="#battery_tab">Battery</a></li>
-                    <li id="raw_data_tab_box"><a data-toggle="tab" href="#raw_data_tab">Raw Data</a></li>
-                    <li id="plug_state_tab_box"><a data-toggle="tab" href="#plug_state_tab">Plug State</a></li>
-                    <li id="event_timeline_tab_box" onclick="return create_time_line();"><a data-toggle="tab" href="#event_timeline_tab" onclick="return create_time_line();">Time Line</a></li>
-                </ul>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#dashboard_tab">Dashboard</a></li>
+                        <li id="location_tab_box"><a data-toggle="tab" href="#location_tab">Location</a></li>
+                        <li id="battery_tab_box"><a data-toggle="tab" href="#battery_tab">Battery</a></li>
+                        <li id="raw_data_tab_box"><a data-toggle="tab" href="#raw_data_tab">Raw Data</a></li>
+                        <li id="plug_state_tab_box"><a data-toggle="tab" href="#plug_state_tab">Plug State</a></li>
+                        <li id="event_timeline_tab_box" onclick="return create_time_line();"><a data-toggle="tab"
+                                                                                                href="#event_timeline_tab"
+                                                                                                onclick="return create_time_line();">Time
+                            Line</a></li>
+                    </ul>
 
-                <div class="tab-content">
-                    <div id="dashboard_tab" class="tab-pane fade in active">
-                        <div class="well col-sm-3">
-                            <h4 align="left">Device Information</h4>
+                    <div class="tab-content">
+                        <div id="dashboard_tab" class="tab-pane fade in active">
+                            <div class="well col-sm-3">
+                                <h4 align="left">Device Information</h4>
+
+                                <div class="panel-default panel">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p align="left">Device Username</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p id="device_username_text"> No device selected</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p align="left">Device Name</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p id="device_name_text"> - </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p align="left">Latest Ping</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p id="latest_ping_text"> - </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="location_tab" class="tab-pane fade">
+                            <div class="well col-sm-7">
+
+                                <div id="map"></div>
+                            </div>
+                            <div class="well col-sm-4" id="device_location_well">
+                                <h4 align="left">Location</h4>
+
+                                <div class="panel-default panel">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p align="left">Current Coordinates</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p id="current_coordinates_text"> - </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p align="left">Current Location</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p id="current_location_text"> - </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p align="left">Latest Update</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p id="latest_update_text"> - </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="panel-default panel">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-5">
+
+                                                <p align="left">Start Date</p>
+
+                                                <input type="date" name="start" id="trail-start-date">
+                                                <input type="time" name="start" id="trail-start-time">
+
+
+                                            </div>
+                                            <div class="col-sm-5">
+
+                                                <p align="left">End Date</p>
+
+                                                <input type="date" name="end" id="trail-end-date">
+                                                <input type="time" name="start" id="trail-end-time">
+
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <select class="form-control" id="location_time_zone_picker">
+                                                    <option value="840">UTC+14</option>
+                                                    <option value="825">UTC+13:45</option>
+                                                    <option value="780">UTC+13</option>
+                                                    <option value="720">UTC+12</option>
+                                                    <option value="660">UTC+11</option>
+                                                    <option value="630">UTC+10:30</option>
+                                                    <option value="600">UTC+10</option>
+                                                    <option value="570">UTC+9:30</option>
+                                                    <option value="540">UTC+9</option>
+                                                    <option value="525">UTC+8:45</option>
+                                                    <option value="510">UTC+8:30</option>
+                                                    <option value="480">UTC+8</option>
+                                                    <option value="420">UTC+7</option>
+                                                    <option value="390">UTC+6:30</option>
+                                                    <option value="360">UTC+6</option>
+                                                    <option value="345">UTC+5:45</option>
+                                                    <option value="330">UTC+5:30, New Delhi</option>
+                                                    <option value="300">UTC+5</option>
+                                                    <option value="270">UTC+4:30</option>
+                                                    <option value="240">UTC+4</option>
+                                                    <option value="210">UTC+3:30</option>
+                                                    <option value="180">UTC+3 Istanbul</option>
+                                                    <option value="120">UTC+2 Israel</option>
+                                                    <option value="60">UTC+1</option>
+                                                    <option value="0">UTC</option>
+                                                    <option value="-60">UTC-1</option>
+                                                    <option value="-120">UTC-2</option>
+                                                    <option value="-180">UTC-3</option>
+                                                    <option value="-210">UTC-3:30</option>
+                                                    <option value="-240">UTC-4</option>
+                                                    <option value="-300">UTC-5, U.S. Eastern Standard Time</option>
+                                                    <option value="-360">UTC-6</option>
+                                                    <option value="-420">UTC-7</option>
+                                                    <option value="-480">UTC-8</option>
+                                                    <option value="-540">UTC-9</option>
+                                                    <option value="-570">UTC-9:30</option>
+                                                    <option value="-600">UTC-10</option>
+                                                    <option value="-660">UTC-11</option>
+                                                    <option value="-720">UTC-12</option>
+                                                </select>
+                                                <script>
+                                                    console.log("Initializing time zone picker");
+                                                    var tpe = document.getElementById("location_time_zone_picker");
+
+                                                    var options_array = tpe.options;
+
+                                                    var client_time_zone = new Date().getTimezoneOffset() * -1;
+
+                                                    for (var i = 0; i < options_array.length; i++) {
+                                                        if (client_time_zone == options_array[i].value) {
+                                                            options_array[i].selected = true;
+                                                            time_zone_offset = options_array[i].value;
+                                                            console.log("Time Zone Picked as ", options_array[i].text);
+                                                        }
+                                                    }
+
+
+                                                </script>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <button type="button" class="btn btn-primary"
+                                                        onclick="return map_get_button();">Query
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div id="event_timeline_tab" class="tab-pane fade">
+
+                            <div class="well">
+                                <div id="timeline1" style="height: 580px; width: 600px;"></div>
+                            </div>
+
+
+                        </div>
+                        <div id="battery_tab" class="tab-pane fade">
+
 
                             <div class="panel-default panel">
                                 <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p align="left">Device Username</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p id="device_username_text"> No device selected</p>
-                                        </div>
+                                    <div class="col-sm-5">
+
+                                        <p align="left">Start Date</p>
+
+                                        <input type="date" name="start">
+                                        <input type="time" name="start_hour">
+
+
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p align="left">Device Name</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p id="device_name_text"> - </p>
-                                        </div>
+                                    <div class="col-sm-5">
+
+                                        <p align="left">End Date</p>
+
+                                        <input type="date" name="end">
+                                        <input type="time" name="end_hour">
+
+
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p align="left">Latest Ping</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p id="latest_ping_text"> - </p>
-                                        </div>
+                                    <div class="col-sm-1">
+                                        <button type="button" class="btn btn-primary">Query</button>
                                     </div>
 
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div id="location_tab" class="tab-pane fade">
-                        <div class="well col-sm-7">
 
-                            <div id="map"></div>
+                            <canvas id="lineChart_percentage"></canvas>
+
+
                         </div>
-                        <div class="well col-sm-4" id="device_location_well">
-                            <h4 align="left">Location</h4>
+                        <div id="raw_data_tab" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-sm-5 text-left">
+                                    <input type="number" id="raw_data_page"/>
+                                    <!--<ul class="pagination" id="raw-data-pagination">-->
+                                    <!--<li><a href="#">1</a></li>-->
+                                    <!--<li class="active"><a href="#">2</a></li>-->
+                                    <!--<li><a href="#">3</a></li>-->
+                                    <!--<li><a href="#">4</a></li>-->
+                                    <!--<li><a href="#">5</a></li>-->
+                                    <!--</ul>-->
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="panel-default panel">
+                                        <div class="panel-body">
+                                            <div class="col-sm-4">
+
+                                                <p align="left">Start Date</p>
+
+                                                <input type="date" name="start" id="raw_data-start-date">
+
+
+                                            </div>
+                                            <div class="col-sm-4">
+
+                                                <p align="left">End Date</p>
+
+                                                <input type="date" name="end" id="raw_data-end-date">
+
+
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <button type="button" class="btn btn-primary"
+                                                        onclick="return get_raw_data();">Query
+                                                </button>
+                                            </div>
+
+                                            <script>
+                                                console.log("Initializing date for... ");
+                                                var current = new Date();
+                                                var before = new Date(current.getTime() - 86400000);
+                                                var followingDay = new Date(current.getTime() + 86400000);
+                                                var start_date_picker = document.getElementById("raw_data-start-date");
+                                                var end_date_picker = document.getElementById("raw_data-end-date");
+
+
+                                                var before_string = before.toISOString();
+                                                before_string = before_string.slice(0, before_string.indexOf("T"));
+                                                start_date_picker.value = before_string;
+
+                                                var following_day_string = followingDay.toISOString();
+                                                following_day_string = following_day_string.slice(0, following_day_string.indexOf("T"));
+
+                                                end_date_picker.value = following_day_string; //fucking format is wrong, it has to be year-month-day
+
+                                            </script>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group" id="raw_data_list">
+                                <!--<a data-toggle="collapse" href="#collapse1" class="list-group-item">-->
+                                <!--<p class="list-group-item-text">Packet Id: 121,  Server Received at: 23 Feb 2018, Device Id: device1</p>-->
+                                <!--<div class="panel-collapse panel-body collapse" id="collapse1">"{\n    \"BP\": 97,\n    \"BV\": 4.18,\n    \"D\": 24,\n    \"GL\": \"0,28.696495,41.057480,2018/02/24,23:23:28\",\n    \"H\": 23,\n    \"IMEI\": \"865067026137375\",\n    \"IP\": \"10.13.146.0\",\n    \"M\": 2,\n    \"Opr\": \"TELSIM GSM\",\n    \"S\": 28,\n    \"SigQty\": 29,\n    \"SimCCID\": \"8990029300776219052f\",\n    \"Y\": 2018,\n    \"a\": 35,\n    \"access_points\": [\n        {\n            \"bssid\": \"e0:3f:49:a9:6a:58:52:49\",\n            \"signal\": \"-83\"\n        },\n        {\n            \"bssid\": \"e8:94:f6:b4:8d:32:52:49\",\n            \"signal\": \"-62\"\n        }\n    ],\n    \"current\": 0.05,\n    \"la\": 41.0604705811,\n    \"lo\": 28.6959209442,\n    \"m\": 23,\n    \"mpt\": 38.37,\n    \"s\": 0.02,\n    \"sts\": \"Ltimeout\",\n    \"u\": 9,\n    \"v\": 9\n}"</div>-->
+                                <!--</a>-->
+                                <!--<a data-toggle="collapse" href="#collapse2" class="list-group-item">-->
+                                <!--<p class="list-group-item-text">List Group Item Text</p>-->
+                                <!--<div class="panel-collapse panel-body collapse" id="collapse2">Panel Body</div>-->
+                                <!--</a>-->
+
+                            </div>
+
+
+                        </div>
+                        <div id="plug_state_tab" class="tab-pane fade">
+                            <h3>Plug State</h3>
 
                             <div class="panel-default panel">
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p align="left">Current Coordinates</p>
+                                            <p align="left">Current State</p>
                                         </div>
                                         <div class="col-sm-9">
-                                            <p id="current_coordinates_text"> - </p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p align="left">Current Location</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p id="current_location_text"> - </p>
+                                            <p id="plug_current_state_text"> - </p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -211,101 +426,17 @@
                                             <p align="left">Latest Update</p>
                                         </div>
                                         <div class="col-sm-9">
-                                            <p id="latest_update_text"> - </p>
+                                            <p id="plug_latest_update_text"> - </p>
                                         </div>
                                     </div>
 
-                                </div>
-                            </div>
-                            <div class="panel-default panel">
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-sm-5">
-
-                                            <p align="left">Start Date</p>
-
-                                            <input type="date" name="start" id="trail-start-date">
-                                            <input type="time" name="start" id="trail-start-time">
-
-
-                                        </div>
-                                        <div class="col-sm-5">
-
-                                            <p align="left">End Date</p>
-
-                                            <input type="date" name="end" id="trail-end-date">
-                                            <input type="time" name="start" id="trail-end-time">
-
-
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-5">
-                                            <select class="form-control" id="location_time_zone_picker">
-                                                <option value="840">UTC+14</option>
-                                                <option value="825">UTC+13:45</option>
-                                                <option value="780">UTC+13</option>
-                                                <option value="720">UTC+12</option>
-                                                <option value="660">UTC+11</option>
-                                                <option value="630">UTC+10:30</option>
-                                                <option value="600">UTC+10</option>
-                                                <option value="570">UTC+9:30</option>
-                                                <option value="540">UTC+9</option>
-                                                <option value="525">UTC+8:45</option>
-                                                <option value="510">UTC+8:30</option>
-                                                <option value="480">UTC+8</option>
-                                                <option value="420">UTC+7</option>
-                                                <option value="390">UTC+6:30</option>
-                                                <option value="360">UTC+6</option>
-                                                <option value="345">UTC+5:45</option>
-                                                <option value="330">UTC+5:30, New Delhi</option>
-                                                <option value="300">UTC+5</option>
-                                                <option value="270">UTC+4:30</option>
-                                                <option value="240">UTC+4</option>
-                                                <option value="210">UTC+3:30</option>
-                                                <option value="180">UTC+3 Istanbul</option>
-                                                <option value="120">UTC+2 Israel</option>
-                                                <option value="60">UTC+1</option>
-                                                <option value="0">UTC</option>
-                                                <option value="-60">UTC-1</option>
-                                                <option value="-120">UTC-2</option>
-                                                <option value="-180">UTC-3</option>
-                                                <option value="-210">UTC-3:30</option>
-                                                <option value="-240">UTC-4</option>
-                                                <option value="-300">UTC-5, U.S. Eastern Standard Time</option>
-                                                <option value="-360">UTC-6</option>
-                                                <option value="-420">UTC-7</option>
-                                                <option value="-480">UTC-8</option>
-                                                <option value="-540">UTC-9</option>
-                                                <option value="-570">UTC-9:30</option>
-                                                <option value="-600">UTC-10</option>
-                                                <option value="-660">UTC-11</option>
-                                                <option value="-720">UTC-12</option>
-                                            </select>
-                                            <script>
-                                                console.log("Initializing time zone picker");
-                                                var tpe = document.getElementById("location_time_zone_picker");
-
-                                                var options_array = tpe.options;
-
-                                                var client_time_zone = new Date().getTimezoneOffset() * -1;
-
-                                                for (var i = 0; i < options_array.length; i++) {
-                                                    if (client_time_zone == options_array[i].value) {
-                                                        options_array[i].selected = true;
-                                                        time_zone_offset = options_array[i].value;
-                                                        console.log("Time Zone Picked as ", options_array[i].text);
-                                                    }
-                                                }
-
-
-                                            </script>
-                                        </div>
-                                        <div class="col-sm-5">
-                                            <button type="button" class="btn btn-primary"
-                                                    onclick="return map_get_button();">Query
-                                            </button>
-                                        </div>
+                                    <div class="btn-group">
+                                        <button type="button" id="plug_on_button" class="btn btn-success"
+                                                onclick="return toggle_plug(1);">On
+                                        </button>
+                                        <button type="button" id="plug_off_button" class="btn btn-danger"
+                                                onclick="return toggle_plug(0);">Off
+                                        </button>
                                     </div>
 
                                 </div>
@@ -314,163 +445,9 @@
 
                         </div>
                     </div>
-                    <div id="event_timeline_tab" class="tab-pane fade">
 
-                        <div class="well">
-                            <div id="timeline1" style="height: 580px; width: 600px;"></div>
-                        </div>
-
-
-                    </div>
-                    <div id="battery_tab" class="tab-pane fade">
-
-
-                        <div class="panel-default panel">
-                            <div class="panel-body">
-                                <div class="col-sm-5">
-
-                                    <p align="left">Start Date</p>
-
-                                    <input type="date" name="start">
-                                    <input type="time" name="start_hour">
-
-
-                                </div>
-                                <div class="col-sm-5">
-
-                                    <p align="left">End Date</p>
-
-                                    <input type="date" name="end">
-                                    <input type="time" name="end_hour">
-
-
-                                </div>
-                                <div class="col-sm-1">
-                                    <button type="button" class="btn btn-primary">Query</button>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <canvas id="lineChart_percentage"></canvas>
-
-
-                    </div>
-                    <div id="raw_data_tab" class="tab-pane fade">
-                        <div class="row">
-                            <div class="col-sm-5 text-left">
-                                <input type="number" id="raw_data_page"/>
-                                <!--<ul class="pagination" id="raw-data-pagination">-->
-                                <!--<li><a href="#">1</a></li>-->
-                                <!--<li class="active"><a href="#">2</a></li>-->
-                                <!--<li><a href="#">3</a></li>-->
-                                <!--<li><a href="#">4</a></li>-->
-                                <!--<li><a href="#">5</a></li>-->
-                                <!--</ul>-->
-                            </div>
-                            <div class="col-sm-5">
-                                <div class="panel-default panel">
-                                    <div class="panel-body">
-                                        <div class="col-sm-4">
-
-                                            <p align="left">Start Date</p>
-
-                                            <input type="date" name="start" id="raw_data-start-date">
-
-
-                                        </div>
-                                        <div class="col-sm-4">
-
-                                            <p align="left">End Date</p>
-
-                                            <input type="date" name="end" id="raw_data-end-date">
-
-
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <button type="button" class="btn btn-primary"
-                                                    onclick="return get_raw_data();">Query
-                                            </button>
-                                        </div>
-
-                                        <script>
-                                            console.log("Initializing date for... ");
-                                            var current = new Date();
-                                            var before = new Date(current.getTime() - 86400000);
-                                            var followingDay = new Date(current.getTime() + 86400000);
-                                            var start_date_picker = document.getElementById("raw_data-start-date");
-                                            var end_date_picker = document.getElementById("raw_data-end-date");
-
-
-                                            var before_string = before.toISOString();
-                                            before_string = before_string.slice(0, before_string.indexOf("T"));
-                                            start_date_picker.value = before_string;
-
-                                            var following_day_string = followingDay.toISOString();
-                                            following_day_string = following_day_string.slice(0, following_day_string.indexOf("T"));
-
-                                            end_date_picker.value = following_day_string; //fucking format is wrong, it has to be year-month-day
-
-                                        </script>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-group" id="raw_data_list">
-                            <!--<a data-toggle="collapse" href="#collapse1" class="list-group-item">-->
-                            <!--<p class="list-group-item-text">Packet Id: 121,  Server Received at: 23 Feb 2018, Device Id: device1</p>-->
-                            <!--<div class="panel-collapse panel-body collapse" id="collapse1">"{\n    \"BP\": 97,\n    \"BV\": 4.18,\n    \"D\": 24,\n    \"GL\": \"0,28.696495,41.057480,2018/02/24,23:23:28\",\n    \"H\": 23,\n    \"IMEI\": \"865067026137375\",\n    \"IP\": \"10.13.146.0\",\n    \"M\": 2,\n    \"Opr\": \"TELSIM GSM\",\n    \"S\": 28,\n    \"SigQty\": 29,\n    \"SimCCID\": \"8990029300776219052f\",\n    \"Y\": 2018,\n    \"a\": 35,\n    \"access_points\": [\n        {\n            \"bssid\": \"e0:3f:49:a9:6a:58:52:49\",\n            \"signal\": \"-83\"\n        },\n        {\n            \"bssid\": \"e8:94:f6:b4:8d:32:52:49\",\n            \"signal\": \"-62\"\n        }\n    ],\n    \"current\": 0.05,\n    \"la\": 41.0604705811,\n    \"lo\": 28.6959209442,\n    \"m\": 23,\n    \"mpt\": 38.37,\n    \"s\": 0.02,\n    \"sts\": \"Ltimeout\",\n    \"u\": 9,\n    \"v\": 9\n}"</div>-->
-                            <!--</a>-->
-                            <!--<a data-toggle="collapse" href="#collapse2" class="list-group-item">-->
-                            <!--<p class="list-group-item-text">List Group Item Text</p>-->
-                            <!--<div class="panel-collapse panel-body collapse" id="collapse2">Panel Body</div>-->
-                            <!--</a>-->
-
-                        </div>
-
-
-                    </div>
-                    <div id="plug_state_tab" class="tab-pane fade">
-                        <h3>Plug State</h3>
-
-                        <div class="panel-default panel">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p align="left">Current State</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p id="plug_current_state_text"> - </p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p align="left">Latest Update</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p id="plug_latest_update_text"> - </p>
-                                    </div>
-                                </div>
-
-                                <div class="btn-group">
-                                    <button type="button" id="plug_on_button" class="btn btn-success"
-                                            onclick="return toggle_plug(1);">On
-                                    </button>
-                                    <button type="button" id="plug_off_button" class="btn btn-danger"
-                                            onclick="return toggle_plug(0);">Off
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-                    </div>
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>
