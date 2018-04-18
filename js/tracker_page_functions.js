@@ -1,21 +1,55 @@
-
 server = "http://diyprototypes.com";
 
 
 devices = {};
 current_selected_device = "";
-
+refresh = false;
+refresh_loop = "";
 
 // fill_devices_list(select_the_first_device);
+initialize_default_values_of_location_tab();
 test_connection();
 fill_devices_list(select_the_first_device);
+
+function map_get_button(){
+    console.log("Button!");
+}
+
+function toggle_refresh(){
+    console.log("BUtton");
+    var refbutton = document.getElementById("refresh_button");
+
+    if (refresh == false) {
+        refresh_loop = setInterval(display_device_details, 5000);
+        refresh = true;
+
+        refbutton.textContent = "Syncing";
+
+        console.log("Started Refresh Execution");
+    } else {
+        window.clearInterval(refresh_loop);
+        console.log("Stopped Refresh Execution");
+
+        refbutton.textContent = "Start Sync";
+
+        refresh = false;
+    }
+}
+
+function initMap() {
+    console.log("Google Maps Initialized");
+    var uluru = {lat: -25.363, lng: 131.044};
+    google_map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: uluru});
+
+}
+
 
 function select_the_first_device() {
     if (Object.keys(devices).length > 0) { // it means we actually kinda have a device to choose!
         //console.log("We have elements to choose from");
-        for (var i =0; i< devices.length; i++){
+        for (var i = 0; i < devices.length; i++) {
             var current_device = devices[Object.keys(devices)[i]];
-            if (current_device["type"] == "gps tracker"){
+            if (current_device["type"] == "gps tracker") {
                 device_select(Object.keys(devices)[i]);
             }
         }
@@ -43,7 +77,7 @@ function fill_devices_list(call_back_function) {
 
             for (var i = 0; i < devices_array.length; i++) {
                 // maybe declare these guys outside
-                if (devices_array[i]["type"] == "gps tracker"){
+                if (devices_array[i]["type"] == "gps tracker") {
                     create_device_card(devices_panel_root, devices_array[i]);
                 }
                 //create_device_card(devices_panel_root, devices_array[i]);
@@ -280,7 +314,6 @@ function display_device_details() {
 }
 
 
-
 function update_location_trail(device_id) {
     var trail_start_date_picker = document.getElementById("trail-start-date");
     var trail_end_date_picker = document.getElementById("trail-end-date");
@@ -319,16 +352,23 @@ function update_location_trail(device_id) {
             var json_response = JSON.parse(xhttp.responseText);
             var trail = json_response["positions"];
 
-            var bounds = new google.maps.LatLngBounds();
+            if (trail.length == 0) {
+                console.log("Trail is empty! Trying older times");
+                get_latest_day_path(device_id);
 
-            for (var i = 0; i < trail.length; i++) {
-                var gglshit = new google.maps.LatLng(trail[i]["lat"], trail[i]["lng"]);
-                bounds.extend(gglshit);
+            } else {
+
+                var bounds = new google.maps.LatLngBounds();
+
+                for (var i = 0; i < trail.length; i++) {
+                    var gglshit = new google.maps.LatLng(trail[i]["lat"], trail[i]["lng"]);
+                    bounds.extend(gglshit);
+                }
+
+
+                google_map.fitBounds(bounds);
+                add_path(trail);
             }
-
-
-            google_map.fitBounds(bounds);
-            add_path(trail);
 
 
             // change_map(lat_av,lng_av);
@@ -339,7 +379,88 @@ function update_location_trail(device_id) {
     xhttp.send(data);
     //console.log("Sent get_gps_trail request");
     //send the next query for the location widget
-    update_location_widget();
+    //update_location_widget();
+}
+
+function get_latest_day_path(device_id) {
+
+
+    var data = JSON.stringify(
+        {
+            "device_id": device_id
+        });
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            //console.log(" Response : " + xhttp.responseText);
+            var json_response = JSON.parse(xhttp.responseText);
+            var trail = json_response["positions"];
+
+
+            if (trail.length == 0) {
+                console.log("Trail is empty! This device has no data!");
+
+            } else {
+                var start_date = json_response["start_date"];
+                var end_date = json_response["end_date"];
+
+                console.log("Start date " + start_date);
+                var arr_start = start_date.split(" ");
+                start_date = combine_date_string_time_string(arr_start[0], arr_start[1]);
+
+                console.log("End date " + end_date);
+                var arr_end = end_date.split(" ");
+                end_date = combine_date_string_time_string(arr_end[0], arr_start[1]);
+
+                var trail_start_date_picker = document.getElementById("trail-start-date");
+                var trail_end_date_picker = document.getElementById("trail-end-date");
+
+                var tst = document.getElementById("trail-start-time");
+                var tet = document.getElementById("trail-end-time");
+                //console.log("Time Zone offset I'm using ", time_zone_offset);
+
+                //var timenow = UTC_to_local_time(new Date());
+
+                var timenow_string = start_date.toTimeString(); //This stupid function converts to Local Timezone
+                var time_end_string = end_date.toTimeString();
+
+                tst.value = timenow_string.substring(0, timenow_string.indexOf(" "));
+                tet.value = time_end_string.substring(0, timenow_string.indexOf(" "));
+
+
+                var start_date_string = start_date.toISOString();
+                start_date_string = start_date_string.slice(0, start_date_string.indexOf("T"));
+                trail_start_date_picker.value = start_date_string;
+
+                var end_date_string = end_date.toISOString();
+                end_date_string = end_date_string.slice(0, end_date_string.indexOf("T"));
+                trail_end_date_picker.value = end_date_string; //fucking format is wrong, it has to be year-month-day
+
+
+                var bounds = new google.maps.LatLngBounds();
+
+                for (var i = 0; i < trail.length; i++) {
+                    var gglshit = new google.maps.LatLng(trail[i]["lat"], trail[i]["lng"]);
+                    bounds.extend(gglshit);
+                }
+
+
+                google_map.fitBounds(bounds);
+                add_path(trail);
+            }
+
+
+            // change_map(lat_av,lng_av);
+        }
+    };
+    xhttp.open("POST", server + "/api/get_recent_gps_trail", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(data);
+    //console.log("Sent get_gps_trail request");
+    //send the next query for the location widget
+    //update_location_widget();
+
 }
 
 function get_path_color(speed) {
@@ -456,4 +577,34 @@ function add_path(waypoints) {
 
     }
 
+}
+
+function initialize_default_values_of_location_tab() {
+
+    //console.log("Initializing date for... ");
+    var current = new Date();
+
+    var trail_start_date_picker = document.getElementById("trail-start-date");
+    var trail_end_date_picker = document.getElementById("trail-end-date");
+
+    var tst = document.getElementById("trail-start-time");
+    var tet = document.getElementById("trail-end-time");
+    //console.log("Time Zone offset I'm using ", time_zone_offset);
+
+    var timenow = UTC_to_local_time(new Date());
+
+    var timenow_string = new Date().toTimeString(); //This stupid function converts to Local Timezone
+
+    tst.value = "00:00:00";
+    tet.value = timenow_string.substring(0, timenow_string.indexOf(" "));
+
+
+    var before_string = timenow.toISOString();
+    before_string = before_string.slice(0, before_string.indexOf("T"));
+    trail_start_date_picker.value = before_string;
+
+    var following_day_string = timenow.toISOString();
+    following_day_string = following_day_string.slice(0, following_day_string.indexOf("T"));
+
+    trail_end_date_picker.value = following_day_string; //fucking format is wrong, it has to be year-month-day
 }
