@@ -228,7 +228,9 @@ function create_device_card(devices_panel_root, device) {
     glyphicon_status.className = "glyphicon glyphicon-ok-sign glyphicon-device-status";
     p_status.appendChild(glyphicon_status);
 
-    p_status.textContent = "Last ping: " + device_last_ping;
+    var moment_ping_date = moment(UTC_to_local_time(device_last_ping));
+
+    p_status.textContent = "Last ping: " + moment_ping_date.fromNow();
 
 
 }

@@ -1,53 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <title>Main Page</title>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/maps/documentation/javascript/demos/demos.css">
-
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/css/mdb.min.css"/>
-    <link rel="stylesheet" href="./css/project_specific.css">
-
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/js/mdb.min.js"></script>
+    <script src="js/moment-with-locales.js"></script>
+    <script src="js/utils.js"></script>
 
 
     <style>
-        /* Set black background color, white text and some padding */
-        footer {
-            background-color: #555;
-            color: white;
-            padding: 15px;
-        }
-
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
         #map {
-            height: 400px;
-            width: 100%;
-        }
-
-        /*.panel-default {*/
-            /*margin-left: 1%;*/
-            /*margin-right: 1%;*/
-        /*}*/
-
-        .glyphicon-device-status {
-            font-size: 30px;
-            color: green;
+            height: 100%;
         }
 
 
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
     </style>
+    <script src="js/tracker_page_functions.js"></script>
+
 </head>
 <body>
-
-
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse" style="margin-bottom: 0px;padding-right: 0px;">
     <div class="container-fluid">
         <div class="navbar-header">
             <!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">-->
@@ -69,281 +53,50 @@
         </div>
     </div>
 </nav>
+<div style="height: 100%; position: relative;">
+<div class="col-md-3">
+    <div class="panel">
 
-<div class="container-fluid text-center">
-    <div class="row">
-        <div class="col-sm-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4>Events</h4>
-                </div>
-                <div class="panel-body">
-                    <div class="alert alert-success fade in">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                        <p><strong>Connection Restored</strong></p>
-                        People are looking at your profile. Find out who.
-                    </div>
-
-                    <div class="alert alert-warning fade in">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                        <p><strong>Connection Lost</strong></p>
-                        Connection lost with: Rover-1
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4>Devices</h4>
-                </div>
-                <div class="panel-body">
-
-                    <div id="devices_panel">
-
-
-                        <!--<div class="panel panel-default">-->
-                        <!--<div class="panel-heading">-->
-                        <!--<h4>GPS Tracker 1</h4>-->
-                        <!--</div>-->
-                        <!--<div class="panel-body">-->
-                        <!--<div class="col-sm-3">-->
-                        <!--<img src="images/gpstracker.png" class="img-circle" height="55" width="55" alt="Avatar">-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-9">-->
-                        <!--<div class="row">-->
-
-                        <!--<p align="left">-->
-                        <!--<span class="glyphicon glyphicon-flash glyphicon-device-status"></span>-->
-                        <!--8 Hours of-->
-                        <!--Battery available </p>-->
-
-                        <!--</div>-->
-                        <!--<div class="row">-->
-                        <!--<p align="left"><span-->
-                        <!--class="glyphicon glyphicon-ok-sign glyphicon-device-status"></span> All-->
-                        <!--Systems Operational </p>-->
-
-                        <!--</div>-->
-
-                        <!--</div>-->
-                        <!--</div>-->
-                        <!--</div>-->
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4>Device Details</h4>
-                </div>
-                <div class="panel-body">
-
-                    <div class="well">
-                        <h4 align="left">Device Information</h4>
-
-                        <div class="panel-default panel">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p align="left">Device Username</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p id="device_username_text"> No device selected</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p align="left">Device Name</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p id="device_name_text"> - </p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p align="left">Latest Ping</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p id="latest_ping_text"> - </p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="well" id="device_location_well">
-                        <h3 align="left">Location</h3>
-
-                        <div class="panel-default panel">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p align="left">Current Coordinates</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p id="current_coordinates_text"> - </p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p align="left">Current Location</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p id="current_location_text"> - </p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p align="left">Latest Update</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p id="latest_update_text"> - </p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="panel-default panel">
-                            <div class="panel-body">
-                                <div class="col-sm-4">
-
-                                    <p align="left">Start Date</p>
-
-                                    <input type="date" name="start" id="trail-start-date">
-
-
-                                </div>
-                                <div class="col-sm-4">
-
-                                    <p align="left">End Date</p>
-
-                                    <input type="date" name="end" id="trail-end-date">
-
-
-                                </div>
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-primary" onclick="return map_get_button();">
-                                        Query
-                                    </button>
-                                </div>
-
-
-                            </div>
-                        </div>
-
-                        <div id="map"></div>
-
-                    </div>
-
-                    <div class="well" id="plug_state_well">
-                        <h3 align="left">Plug State</h3>
-
-                        <div class="panel-default panel">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p align="left">Current State</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p> - </p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p align="left">Latest Update</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p> - </p>
-                                    </div>
-                                </div>
-
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success">On</button>
-                                    <button type="button" class="btn btn-danger">Off</button>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                    <div class="well" id="device_battery_well">
-                        <h4 align="left">Battery</h4>
-
-                        <div class="panel-default panel">
-                            <div class="panel-body">
-                                <div class="col-sm-4">
-
-                                    <p align="left">Start Date</p>
-
-                                    <input type="date" name="start">
-
-
-                                </div>
-                                <div class="col-sm-4">
-
-                                    <p align="left">End Date</p>
-
-                                    <input type="date" name="end">
-
-
-                                </div>
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-primary">Set Time Range</button>
-                                </div>
-
-                                <script>
-                                    console.log("Initializing date for... ");
-                                    var current = new Date();
-                                    var before = new Date(current.getTime() - 86400000);
-                                    var followingDay = new Date(current.getTime() + 86400000);
-                                    var trail_start_date_picker = document.getElementById("trail-start-date");
-                                    var trail_end_date_picker = document.getElementById("trail-end-date");
-
-
-                                    var before_string = before.toISOString();
-                                    before_string = before_string.slice(0, before_string.indexOf("T"));
-                                    trail_start_date_picker.value = before_string;
-
-                                    var following_day_string = followingDay.toISOString();
-                                    following_day_string = following_day_string.slice(0, following_day_string.indexOf("T"));
-
-                                    trail_end_date_picker.value = following_day_string; //fucking format is wrong, it has to be year-month-day
-
-                                </script>
-
-
-                            </div>
-                        </div>
-
-                        <canvas id="lineChart_percentage"></canvas>
-
-
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
     </div>
+    <div class="col-md-12" style="padding-top: 10px;" id="devices_panel">
+
+
+    </div>
+<!--<div class="card" style="width: 100%">-->
+  <!--<img class="card-img-top" src="..." alt="Card image cap">-->
+  <!--<div class="card-body">-->
+    <!--<h5 class="card-title">Card title</h5>-->
+    <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+    <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+  <!--</div>-->
+<!--</div>-->
+</div>
+<div class="col-md-9" style=" height: 100%; position: relative;">
+    <div class="panel" style="width: 100%; height: 100%; position: relative;">
+        <div id="map" style="width: 100%; height: 100%; position: relative;"></div>
+    </div>
+
+
+</div>
 </div>
 
-<!--<footer class="container-fluid text-center">-->
-<!--<p>Footer Text</p>-->
-<!--</footer>-->
+<script>
+    var map;
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: -34.397, lng: 150.644},
+        zoom: 8
+    });
+}
+
+</script>
 
 
-<script src="js/dashboard_functions.js"></script>
-
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVYK3iQrTq30MLqLO2j7YBqUM36S8Nm9Y&callback=initMap"></script>
-
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVYK3iQrTq30MLqLO2j7YBqUM36S8Nm9Y&callback=initMap"></script>
 </body>
 </html>
+
+
+<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVYK3iQrTq30MLqLO2j7YBqUM36S8Nm9Y&callback=initMap"></script>-->
+
