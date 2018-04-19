@@ -11,8 +11,8 @@ initialize_default_values_of_location_tab();
 test_connection();
 fill_devices_list(select_the_first_device);
 
-function map_get_button(){
-    console.log("Button!");
+function map_get_button() {
+    update_location_trail(current_selected_device);
 }
 
 function toggle_refresh(){
@@ -324,9 +324,9 @@ function update_location_trail(device_id) {
 
     var start_date = combine_date_string_time_string(trail_start_date_picker.value, start_time_picker.value);
     var end_date = combine_date_string_time_string(trail_end_date_picker.value, end_time_picker.value);
-    console.log("End date picker date ", trail_end_date_picker.value, " time ", end_time_picker.value);
-    console.log("End date local ", end_date);
-    console.log("Start date local ", start_date);
+    // console.log("End date picker date ", trail_end_date_picker.value, " time ", end_time_picker.value);
+    // console.log("End date local ", end_date);
+    // console.log("Start date local ", start_date);
 
 
     start_date = local_time_to_UTC(start_date);
@@ -334,8 +334,8 @@ function update_location_trail(device_id) {
     start_date = start_date.toISOString().replace("T", " ").replace("Z", "");
     end_date = end_date.toISOString().replace("T", " ").replace("Z", "");
 
-    console.log("Start Date ", start_date);
-    console.log("End Date ", end_date);
+    // console.log("Start Date ", start_date);
+    // console.log("End Date ", end_date);
 
 
     var data = JSON.stringify(
@@ -382,6 +382,10 @@ function update_location_trail(device_id) {
     //update_location_widget();
 }
 
+function pad(d) {
+    return (d < 10) ? '0' + d.toString() : d.toString();
+}
+
 function get_latest_day_path(device_id) {
 
 
@@ -402,40 +406,48 @@ function get_latest_day_path(device_id) {
                 console.log("Trail is empty! This device has no data!");
 
             } else {
-                var start_date = json_response["start_date"];
-                var end_date = json_response["end_date"];
+                var start_date = json_response["start_date"] + "Z"; //we are receiving in UTC from the server
+                var end_date = json_response["end_date"]+ "Z"; //we are receiving in UTC from the server
 
-                console.log("Start date " + start_date);
-                var arr_start = start_date.split(" ");
-                start_date = combine_date_string_time_string(arr_start[0], arr_start[1]);
+                console.log("Start date received " + start_date);
 
-                console.log("End date " + end_date);
-                var arr_end = end_date.split(" ");
-                end_date = combine_date_string_time_string(arr_end[0], arr_start[1]);
+                console.log("End date received " + end_date);
+
+                start_date = new Date(start_date);
+                end_date = new Date(end_date);
+
+
+                console.log("Start date parsed " + start_date);
+
+                console.log("End date parsed " + end_date);
 
                 var trail_start_date_picker = document.getElementById("trail-start-date");
                 var trail_end_date_picker = document.getElementById("trail-end-date");
 
                 var tst = document.getElementById("trail-start-time");
                 var tet = document.getElementById("trail-end-time");
+
                 //console.log("Time Zone offset I'm using ", time_zone_offset);
-
                 //var timenow = UTC_to_local_time(new Date());
+                // var timenow_string = start_date.toTimeString(); //This stupid function converts to Local Timezone
+                // var time_end_string = end_date.toTimeString();
+                // tst.value = timenow_string.substring(0, timenow_string.indexOf(" "));
+                // tet.value = time_end_string.substring(0, timenow_string.indexOf(" "));
+                var start_time_string = pad(start_date.getHours()) + ":" + pad(start_date.getMinutes()) + ":" + pad(start_date.getSeconds());
+                var end_time_string = pad(end_date.getHours()) + ":" + pad(end_date.getMinutes()) + ":" + pad(start_date.getSeconds());
 
-                var timenow_string = start_date.toTimeString(); //This stupid function converts to Local Timezone
-                var time_end_string = end_date.toTimeString();
+                console.log("Trying to push this to time " + start_time_string);
 
-                tst.value = timenow_string.substring(0, timenow_string.indexOf(" "));
-                tet.value = time_end_string.substring(0, timenow_string.indexOf(" "));
+                tst.value = start_time_string;
+                tet.value = end_time_string;
+                //fucking javascript has the months starting from 0, so you actually have to add one... or substract 1 while doing the inverse
+                var start_date_string = start_date.getFullYear() + "-" + pad(start_date.getMonth()+1) + "-" + pad(start_date.getDate());
+                var end_date_string = end_date.getFullYear() + "-" + pad(end_date.getMonth()+1) + "-" + pad(end_date.getDate());
 
+                console.log("Triying to push this to date " + start_date_string);
 
-                var start_date_string = start_date.toISOString();
-                start_date_string = start_date_string.slice(0, start_date_string.indexOf("T"));
                 trail_start_date_picker.value = start_date_string;
-
-                var end_date_string = end_date.toISOString();
-                end_date_string = end_date_string.slice(0, end_date_string.indexOf("T"));
-                trail_end_date_picker.value = end_date_string; //fucking format is wrong, it has to be year-month-day
+                trail_end_date_picker.value = end_date_string;
 
 
                 var bounds = new google.maps.LatLngBounds();
@@ -577,6 +589,20 @@ function add_path(waypoints) {
 
     }
 
+}
+
+function date_string_to_date_object(date_string){
+
+}
+
+function date_input_set_date(date, element_id){
+
+    var element = document.getElementById(element_id);
+
+    var time_string = date.toISOString();
+
+    time_string = time_string.slice(0, time_string.indexOf("T"));
+    elemet.value = time_string
 }
 
 function initialize_default_values_of_location_tab() {
