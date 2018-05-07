@@ -2,8 +2,7 @@
 
 //server = "http://192.168.122.113:5001";
 
-
-server = "http://diyprototypes.com";
+server = "http://www.diyprototypes.com";
 
 
 devices = {};
