@@ -90,6 +90,7 @@ function fill_devices_list(call_back_function) {
     //var authorization = "Basic" + " " + btoa("user-8252ce9c-5960-48a2-aecc-c17212240ffd" + ":" + "pass-kaan");
     var data = JSON.stringify(false);
     var xhttp = new XMLHttpRequest();
+
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             //console.log(" Response : " + xhttp.responseText);
@@ -99,7 +100,6 @@ function fill_devices_list(call_back_function) {
 
             for (var i = 0; i < devices_array.length; i++) {
                 // maybe declare these guys outside
-
 
                 create_device_card(devices_panel_root, devices_array[i]);
                 // add the device to our memory

@@ -1,4 +1,4 @@
-server = "http://diyprototypes.com";
+server = "http://www.diyprototypes.com";
 
 
 devices = {};
@@ -64,16 +64,13 @@ function fill_devices_list(call_back_function) {
 
     var data = JSON.stringify(false);
     var xhttp = new XMLHttpRequest();
+
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             //console.log(" Response : " + xhttp.responseText);
             var json_response = JSON.parse(xhttp.responseText);
             var devices_array = json_response["devices"];
             var devices_panel_root = document.getElementById("devices_panel");
-
-
-            //console.log(devices_array);
-
 
             for (var i = 0; i < devices_array.length; i++) {
                 // maybe declare these guys outside
